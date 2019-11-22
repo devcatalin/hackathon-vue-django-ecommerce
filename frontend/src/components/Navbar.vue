@@ -14,7 +14,7 @@
       </router-link>
     </template>
     <template slot="end" v-else>
-      <b-dropdown aria-role="menu" hoverable position="is-bottom-left">
+      <b-dropdown aria-role="menu" hoverable position="is-bottom-left" v-if="isSeller">
         <b-button slot="trigger" type="is-primary" to="/shopping-cart" tag="router-link">
           <b-icon icon="cart"></b-icon>
           <span>Cos de cumparaturi</span>
@@ -30,6 +30,9 @@
           </div>
         </b-dropdown-item>
       </b-dropdown>
+      <router-link to="/seller-products" exact v-slot="{ isActive, navigate }" v-else>
+        <b-navbar-item @click="navigate">Lista produse</b-navbar-item>
+      </router-link>
       <router-link to="/home" exact v-slot="{ isActive, navigate }">
         <b-navbar-item @click="navigate">Deconectare</b-navbar-item>
       </router-link>

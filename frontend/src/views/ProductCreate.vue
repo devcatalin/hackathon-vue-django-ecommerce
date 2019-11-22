@@ -4,8 +4,14 @@
       <b-field label="Titlu">
         <b-input type="text" v-model="title"></b-input>
       </b-field>
-      <b-field label="Pret">
-        <b-input type="number" v-model="price"></b-input>
+      <b-field>
+        <b-upload v-model="thumbnail">
+          <a class="button is-primary">
+            <b-icon icon="upload"></b-icon>
+            <span>Adaugare poza</span>
+          </a>
+        </b-upload>
+        <span class="file-name" v-if="thumbnail">{{thumbnail.name}}</span>
       </b-field>
       <b-field label="Descriere">
         <b-input type="textarea" v-model="description"></b-input>
@@ -25,21 +31,21 @@
         </b-field>
       </div>
 
-      <b-field label="Tipul cantitatii">
+      <b-field label="Unitate de masura">
         <div class="block">
           <b-radio v-model="quantity_type" name="quantityType" native-value="Kilograme">Kilogram</b-radio>
           <b-radio v-model="quantity_type" name="quantityType" native-value="Bucati">Bucata</b-radio>
         </div>
       </b-field>
-      <b-field>
-        <b-upload v-model="thumbnail">
-          <a class="button is-primary">
-            <b-icon icon="upload"></b-icon>
-            <span>Adaugare poza</span>
-          </a>
-        </b-upload>
-        <span class="file-name" v-if="thumbnail">{{thumbnail.name}}</span>
-      </b-field>
+      <div class="flex-align">
+        <b-field label="Cantitate">
+          <b-input min="0" type="number" v-model="price"></b-input>
+        </b-field>
+        <b-field label="Pret pe unitate">
+          <b-input type="number" v-model="price"></b-input>
+        </b-field>
+      </div>
+
       <Button text="Salveaza" />
     </form>
   </div>
@@ -72,17 +78,12 @@ export default {
   justify-items: center;
   align-content: center;
 
-  height: 91vh;
+  height: 96vh;
 }
 
 form {
   display: grid;
   grid-template-columns: 25rem;
   grid-gap: 1rem;
-}
-
-.flex-align {
-  display: flex;
-  justify-content: space-around;
 }
 </style>

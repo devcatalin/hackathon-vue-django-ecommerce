@@ -6,7 +6,7 @@
       <p>{{price}} Lei</p>
     </div>
     <a href="#">
-      <b-icon class="m-r-sm" icon="square-inc-cash" size="is-small"></b-icon>Cumpara acum
+      <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga in cos
     </a>
   </div>
 </template>

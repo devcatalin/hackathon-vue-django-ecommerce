@@ -17,6 +17,9 @@
             </b-field>
           </b-table-column>
           <b-table-column centered field="price" label="Pret">{{props.row.price}}</b-table-column>
+          <b-table-column width="50" field="price">
+            <b-icon type="is-danger" icon="delete"></b-icon>
+          </b-table-column>
         </template>
       </b-table>
     </div>

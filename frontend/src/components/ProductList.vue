@@ -7,19 +7,14 @@
       <div class="product-list-details-bottom">
         <span>238,59 Lei</span>
         <!-- <a href="#">Cumpara acum</a> -->
-        <Button text="Cumpara acum" />
+        <b-button icon-left="cart" type="is-primary">Adauga in cos</b-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Button from "../components/SmallButton.vue";
-export default {
-  components: {
-    Button
-  }
-};
+export default {};
 </script>
 
 <style lang="scss" scoped>

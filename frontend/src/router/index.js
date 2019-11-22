@@ -11,6 +11,8 @@ import ProductCreate from '../views/ProductCreate.vue';
 
 import ShoppingCart from '../views/ShoppingCart.vue'
 
+import SellerProducts from '../views/SellerProducts.vue'
+
 
 Vue.use(VueRouter)
 
@@ -48,6 +50,11 @@ const routes = [{
     path: '/shopping-cart',
     name: 'shopping_cart',
     component: ShoppingCart
+  },
+  {
+    path: '/seller-products',
+    name: 'seller_products',
+    component: SellerProducts
   },
 
 
