@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
 
 from .models import Category, Subcategory, Product
+
+from .services import create_product
 
 from .selectors import get_categories, get_products_from_subcategory
 
@@ -41,6 +44,58 @@ class SellerProductListView(APIView):
 
 
 class ProductCreateView(APIView):
+    class InputSerializer(serializers.Serializer):
+        title = serializers.CharField()
+        price = serializers.DecimalField(max_digits=6, decimal_places=2)
+        description = serializers.CharField()
+        thumbnail = serializers.ImageField()
+        subcategory = serializers.SlugField()
 
     def post(self, request, *args, **kwargs):
-        pass
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        create_product(owner=request.user, **serializer.validated_data)
+
+        return Response("Created successfully")
+
+
+class ProductDetailView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    class InputSerializer(serializers.Serializer):
+        product_slug = serializers.IntegerField()
+
+    def post(self, request, *args, **kwargs):
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        try:
+            product = Product.objects.get(
+                slug=input_serializer.validated_data["product_slug"]
+            )
+        except Product.DoesNotExist:
+            raise ValidationError("Product does not exist.")
+
+        output_serializer = ProductSerializer(product)
+
+        return Response(output_serializer.data)
+
+
+class ProductDeleteView(APIView):
+    class InputSerializer(serializers.Serializer):
+        product_slug = serializers.SlugField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        product_slug = serializer.validated_data["product_slug"]
+
+        if not Product.objects.filter(slug=product_slug).exists():
+            raise ValidationError("Product does not exist.")
+
+        Product.objects.filter(slug=product_slug).delete()
+
+        return Response("Deleted successfully")

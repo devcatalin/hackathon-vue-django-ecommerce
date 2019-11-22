@@ -41,6 +41,12 @@ class Product(models.Model):
     description = models.TextField()
     thumbnail = models.ImageField()
     subcategory = models.ForeignKey(Subcategory, related_name="products", on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(f'{self.owner.username}-{self.title}')
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.subcategory.title} - {self.title} - {self.price}'
