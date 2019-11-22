@@ -3,9 +3,11 @@ from .views import UserRegisterView
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView,
-    SellerListView
+    TokenRefreshView
 )
+
+from .views import SellerListView
+
 
 urlpatterns = [
     path('register/', UserRegisterView.as_view()),
