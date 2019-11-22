@@ -15,7 +15,7 @@
 
       <b-tab-item label="Producatori">
         <div class="field m-b-sm" style="border-bottom: 1px solid; padding-bottom: 10px;">
-          <button @click="clearSellersFilter">Toti producatorii</button>
+          <small-button text="Toti producatorii" @click="clearSellersFilter">Toti producatorii</small-button>
         </div>
         <div v-for="seller in sellers" :key="seller.full_name" class="m-l-sm">
           <div class="field m-b-sm">
@@ -32,8 +32,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import SmallButton from "../components/SmallButton.vue";
 
 export default {
+  components: {
+    SmallButton
+  },
   data() {
     return {
       sellersFilter: []
