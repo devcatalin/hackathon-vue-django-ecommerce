@@ -72,6 +72,10 @@ $positions: (("t", "top"), ("r", "right"), ("b", "bottom"), ("l", "left"));
   box-sizing: inherit;
 }
 
+#app {
+  font-family: "Tajawal", sans-serif !important;
+}
+
 html {
   box-sizing: border-box;
   font-size: 62.5%; /* 1rem = 10px */

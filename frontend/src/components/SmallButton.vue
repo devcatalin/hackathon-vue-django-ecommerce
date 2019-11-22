@@ -16,7 +16,7 @@ a {
   color: white;
   background-color: #2e7d32;
   height: 2rem;
-  padding: 0.15rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.5s;
