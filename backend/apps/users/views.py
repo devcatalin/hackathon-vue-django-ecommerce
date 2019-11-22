@@ -30,9 +30,26 @@ class UserRegisterView(APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = create_user(**serializer.validated_data)
+        user = services.create_user(**serializer.validated_data)
+        serializer = UserSerializer(user)
 
-        return Response()
+        return Response(serializer.data)
+
+
+class UserProfileUpdateView(APIView):
+    class InputSerializer(serializers.Serializer):
+        full_name = serializers.CharField()
+        phone_number = serializers.CharField()
+        address = serializers.CharField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = services.update_user(user=request.user, **serializer.validated_data)
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
 
 
 class UserProfileDetailView(APIView):
