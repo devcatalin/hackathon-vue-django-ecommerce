@@ -6,14 +6,20 @@
           <b-icon icon="cart-plus"></b-icon>
           <span>Cumparator</span>
         </template>
-        <register-form buyerTypeLabel="Ce tip de cumparator esti ?" />
+        <register-form
+          buyerTypeLabel="Ce tip de cumparator esti ?"
+          fullNameLabel="Nume si prenume"
+        />
       </b-tab-item>
       <b-tab-item>
         <template slot="header">
           <b-icon icon="account"></b-icon>
           <span>Vanzator</span>
         </template>
-        <register-form buyerTypeLabel="Ce tip de cumparatori vrei sa ai ?" />
+        <register-form
+          buyerTypeLabel="Ce tip de cumparatori vrei sa ai ?"
+          fullNameLabel="Denumire companie"
+        />
       </b-tab-item>
     </b-tabs>
   </div>

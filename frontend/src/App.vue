@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <b-loading :is-full-page="true" :active.sync="isLoading"></b-loading>
     <Navbar />
     <router-view />
   </div>
@@ -13,6 +14,10 @@ export default {
   components: { Navbar },
   computed: {
     ...mapGetters(["isLoading"])
+  },
+  beforeMount() {
+    this.$store.dispatch("fetchCategories");
+    this.$store.dispatch("fetchSellers");
   }
 };
 </script>

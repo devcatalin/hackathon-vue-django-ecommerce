@@ -7,10 +7,10 @@
       <b-field label="Email">
         <b-input type="email"></b-input>
       </b-field>
-      <b-field label="Nume si prenume">
+      <b-field :label="fullNameLabel">
         <b-input type="text"></b-input>
       </b-field>
-      <b-field label="Numar de telefon" type="is-info" message="Format: 0123-456-789">
+      <b-field label="Numar de telefon" message="Format: 0123-456-789">
         <b-input type="tel" pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}" required></b-input>
       </b-field>
       <b-field label="Adresa" class="full-columns">
@@ -39,9 +39,7 @@ export default {
   components: {
     Button
   },
-  props: {
-    buyerTypeLabel: String
-  }
+  props: ["buyerTypeLabel", "fullNameLabel"]
 };
 </script>
 

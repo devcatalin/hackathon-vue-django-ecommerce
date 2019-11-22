@@ -4,9 +4,9 @@
       <b-tab-item label="Produse">
         <b-menu>
           <b-menu-list v-for="category in categories" :key="category">
-            <b-menu-item :label="category.name">
+            <b-menu-item :label="category.title">
               <div v-for="subcategory in category.subcategories" :key="subcategory">
-                <b-menu-item :label="subcategory"></b-menu-item>
+                <b-menu-item :label="subcategory.title"></b-menu-item>
               </div>
             </b-menu-item>
           </b-menu-list>
@@ -14,9 +14,15 @@
       </b-tab-item>
 
       <b-tab-item label="Producatori">
-        <div v-for="manufacturer in manufacturers" :key="manufacturer" class="m-l-sm">
+        <div class="field m-b-sm" style="border-bottom: 1px solid; padding-bottom: 10px;">
+          <button @click="clearSellersFilter">Toti producatorii</button>
+        </div>
+        <div v-for="seller in sellers" :key="seller" class="m-l-sm">
           <div class="field m-b-sm">
-            <b-checkbox v-model="manufacturersFilter" :native-value="manufacturer">{{manufacturer}}</b-checkbox>
+            <b-checkbox
+              v-model="sellersFilter"
+              :native-value="seller.full_name"
+            >{{seller.full_name}}</b-checkbox>
           </div>
         </div>
       </b-tab-item>
@@ -25,17 +31,21 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      categories: [
-        { name: "Legume", subcategories: ["Rosii", "Castraveti", "Cartofi"] },
-        { name: "Lactate", subcategories: ["Lapte", "Oua", "Unt", "Iaurt"] },
-        { name: "Carne", subcategories: ["Sunca", "Salam"] }
-      ],
-      manufacturers: ["Agil", "Sim", "Cris Tim"],
-      manufacturersFilter: []
+      sellersFilter: []
     };
+  },
+  methods: {
+    clearSellersFilter() {
+      this.sellersFilter = [];
+    }
+  },
+  computed: {
+    ...mapGetters(["categories", "sellers"])
   }
 };
 </script>

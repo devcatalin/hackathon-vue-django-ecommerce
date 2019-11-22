@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from .models import UserProfile
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProfileSerializer
 
 from . import services
 
@@ -42,7 +42,10 @@ class UserProfileDetailView(APIView):
 
 
 class SellerListView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
     def get(self, request, *args, **kwargs):
         profiles = UserProfile.objects.filter(user_type='seller')
         serializer = UserProfileSerializer(profiles, many=True)
-        return Response(serilizer.data)
+        return Response(serializer.data)

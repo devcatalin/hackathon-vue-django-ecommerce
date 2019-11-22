@@ -5,19 +5,19 @@ export const categoriesModule = {
     categories: []
   },
   getters: {
-
+    categories: state => state.categories
   },
   mutations: {
-    set_categories(state, categories) {
+    setCategories(state, categories) {
       state.categories = categories;
     }
   },
   actions: {
-    async get_categories({commit}) {
+    async fetchCategories({commit}) {
       commit('loading', true);
       const response = await http.get('/api/shop/categories/');
       commit('loading', false);
-      commit('set_categories', response.data);
+      commit('setCategories', response.data);
     }
   }
 }
