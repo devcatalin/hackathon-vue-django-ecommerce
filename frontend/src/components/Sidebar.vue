@@ -1,11 +1,11 @@
 <template>
   <div class="card sidebar">
-    <b-tabs expanded="true" type="is-boxed">
+    <b-tabs :expanded="true" type="is-boxed">
       <b-tab-item label="Produse">
         <b-menu>
-          <b-menu-list v-for="category in categories" :key="category">
+          <b-menu-list v-for="category in categories" :key="category.title">
             <b-menu-item :label="category.title">
-              <div v-for="subcategory in category.subcategories" :key="subcategory">
+              <div v-for="subcategory in category.subcategories" :key="subcategory.title">
                 <b-menu-item :label="subcategory.title"></b-menu-item>
               </div>
             </b-menu-item>
@@ -17,7 +17,7 @@
         <div class="field m-b-sm" style="border-bottom: 1px solid; padding-bottom: 10px;">
           <button @click="clearSellersFilter">Toti producatorii</button>
         </div>
-        <div v-for="seller in sellers" :key="seller" class="m-l-sm">
+        <div v-for="seller in sellers" :key="seller.full_name" class="m-l-sm">
           <div class="field m-b-sm">
             <b-checkbox
               v-model="sellersFilter"
