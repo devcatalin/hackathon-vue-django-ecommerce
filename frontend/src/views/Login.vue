@@ -1,20 +1,24 @@
 <template>
-  <div class="login">
-    <h2>Login</h2>
-    <form>
-      <b-field label="Username">
-        <b-input v-model="username" />
+  <div class="login card">
+    <form v-on:submit.prevent class="card p-lg">
+      <b-field label="Nume de utilizator">
+        <b-input v-model="username"></b-input>
       </b-field>
-      <b-field label="Password">
-        <b-input v-model="password" type="password" password-reveal />
+      <b-field label="Parola">
+        <b-input v-model="password"></b-input>
       </b-field>
-      <b-button @click.prevent="login">Login</b-button>
+      <Button text="Autentificare" />
     </form>
   </div>
 </template>
 
 <script>
+import Button from "@/components/Button.vue";
+
 export default {
+  components: {
+    Button
+  },
   data() {
     return {
       username: "",
@@ -50,33 +54,16 @@ export default {
   justify-items: center;
   align-content: center;
 
-  height: 100vh;
+  height: 91vh;
 }
 
 h2 {
-  font-size: 3.4rem;
+  font-size: 3rem;
 }
 
 form {
   display: grid;
   grid-template-columns: 25rem;
-  grid-gap: 1.5rem;
-}
-
-.form-forgot {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #64b5f6;
-}
-
-input {
-  width: 25rem;
-  height: 2.3rem;
-  background: #fcfcfc;
-  display: block;
-  padding: 0.5rem;
-  border: 1px solid #e7e7e7;
-  border-radius: 0.3rem;
-  font-size: 1rem;
+  grid-gap: 1rem;
 }
 </style>
