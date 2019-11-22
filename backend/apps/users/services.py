@@ -39,3 +39,13 @@ def create_user(
     user.save()
 
     return User.objects.get(username=username)
+
+
+def update_user(
+    *,
+    user,
+    full_name,
+    phone_number,
+    address
+):
+    pass

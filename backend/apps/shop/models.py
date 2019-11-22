@@ -35,17 +35,22 @@ class Subcategory(models.Model):
         return f'{self.category.title} - {self.title} - {self.slug}'
 
 class Product(models.Model):
+    QUANTITY_TYPE_CHOICES = (
+        ('kg', 'Kilogram'),
+        ('buc', 'Bucata')
+    )
+
     owner = models.ForeignKey(User, related_name="products", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
     thumbnail = models.ImageField()
+    quantity_type = models.CharField(max_length=5, choices=QUANTITY_TYPE_CHOICES)
     subcategory = models.ForeignKey(Subcategory, related_name="products", on_delete=models.CASCADE)
     slug = models.SlugField(blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = slugify(f'{self.owner.username}-{self.title}')
+        self.slug = slugify(f'{self.owner.username}-{self.title}')
         super().save(*args, **kwargs)
 
     def __str__(self):
