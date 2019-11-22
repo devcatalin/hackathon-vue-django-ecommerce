@@ -7,6 +7,10 @@ import Register from '../views/Register.vue';
 
 import ProductList from '../views/ProductList.vue';
 import ProductDetail from '../views/ProductDetail.vue';
+import ProductCreate from '../views/ProductCreate.vue';
+
+import ShoppingCart from '../views/ShoppingCart.vue'
+
 
 Vue.use(VueRouter)
 
@@ -31,10 +35,22 @@ const routes = [{
     component: ProductList
   },
   {
-    path: '/products/:slug',
+    path: '/products/detail/:slug',
     name: 'product_detail',
     component: ProductDetail
-  }
+  },
+  {
+    path: '/products/create',
+    name: 'product_create',
+    component: ProductCreate
+  },
+  {
+    path: '/shopping-cart',
+    name: 'shopping_cart',
+    component: ShoppingCart
+  },
+
+
 ]
 
 const router = new VueRouter({
