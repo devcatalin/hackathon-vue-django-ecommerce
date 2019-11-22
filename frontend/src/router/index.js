@@ -55,9 +55,7 @@ const routes = [{
     path: '/seller-products',
     name: 'seller_products',
     component: SellerProducts
-  },
-
-
+  }
 ]
 
 const router = new VueRouter({
@@ -65,5 +63,22 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+
+// router.beforeEach((to, from, next) => {
+//   let web = ["home", "login", "register"];
+//   if(web.includes(to.name)){
+//       next();
+//   }else{
+//     let token = localStorage.getItem('token');
+//     if (token) {
+//       next();
+//     } else {
+//       router.push({
+//         name: 'login'
+//       });
+//     }
+//   }
+// });
 
 export default router

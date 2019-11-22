@@ -18,6 +18,7 @@ export default {
   beforeMount() {
     this.$store.dispatch("fetchCategories");
     this.$store.dispatch("fetchSellers");
+    this.$store.dispatch("getCart");
   }
 };
 </script>

@@ -14,7 +14,7 @@
       </router-link>
     </template>
     <template slot="end" v-else>
-      <b-dropdown aria-role="menu" hoverable position="is-bottom-left" v-if="isSeller">
+      <b-dropdown aria-role="menu" hoverable position="is-bottom-left" v-if="!isSeller">
         <b-button slot="trigger" type="is-primary" to="/shopping-cart" tag="router-link">
           <b-icon icon="cart"></b-icon>
           <span>Cos de cumparaturi</span>
@@ -23,8 +23,8 @@
         <b-dropdown-item custom aria-role="menuitem">
           <div class="shopping-cart-dropdown">
             <div>
-              <router-link to="/shopping-cart">x produse in cos</router-link>
-              <p>5,823 Lei</p>
+              <router-link to="/shopping-cart">{{cartItems.length}} produse in cos</router-link>
+              <p>{{sumCartItems}} Lei</p>
             </div>
             <b-button size="is-small" class="is-primary">Trimite comanda</b-button>
           </div>
@@ -45,7 +45,14 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["isAuthenticated"])
+    ...mapGetters(["isAuthenticated", "cartItems"]),
+    sumCartItems() {
+      let sum = 0;
+      for (let i = 0; i < this.cartItems.length; i++) {
+        sum += this.cartItems[i].price;
+      }
+      return sum;
+    }
   },
   methods: {
     logout() {

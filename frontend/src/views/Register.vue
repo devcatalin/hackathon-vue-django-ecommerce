@@ -21,21 +21,24 @@
           fullNameLabel="Denumire companie"
         />
       </b-tab-item>
+      <!-- <address-search @change="e => address = e.suggestion" /> -->
     </b-tabs>
   </div>
 </template>
 
 <script>
 import RegisterForm from "../components/RegisterForm.vue";
+// import AddressSearch from "../components/AddressSearch.vue";
 
 export default {
-  components: { RegisterForm },
+  components: { RegisterForm, AddressSearch },
   data() {
     return {
       username: "",
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      address: undefined
     };
   },
   computed: {
@@ -56,6 +59,9 @@ export default {
     }
   },
   methods: {
+    test(event) {
+      console.log(event);
+    },
     register() {
       if (this.password !== this.confirmPassword) return;
       let username = this.username;
