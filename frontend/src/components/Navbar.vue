@@ -1,7 +1,7 @@
 <template>
   <b-navbar type="is-primary" spaced="true" shadow="true" fixed-top="true">
     <template slot="brand">
-      <b-navbar-item tag="router-link" :to="{ path: '/' }">
+      <b-navbar-item tag="router-link" :to="{ path: '/home' }">
         <span>LocalGoods</span>
       </b-navbar-item>
     </template>
