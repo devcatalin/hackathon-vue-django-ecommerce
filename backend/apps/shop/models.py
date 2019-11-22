@@ -1,13 +1,17 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(blank=True)
 
+    class Meta:
+        ordering = ['title']
+
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -18,9 +22,12 @@ class Subcategory(models.Model):
     slug = models.SlugField(blank=True)
     category = models.ForeignKey(Category, related_name="subcategories", on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['title']
+
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
