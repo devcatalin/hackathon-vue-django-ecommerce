@@ -1,0 +1,15 @@
+{
+  "name": "dispatch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "cacheDirectories": [
+    "node_modules",
+    "frontend/node_modules"
+  ],
+  "heroku-postinstall": "cd frontend && npm install && npm run build"
+}
