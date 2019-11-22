@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 
 from django.contrib.auth.models import User
 
+from .models import UserProfile
+
 from . import services
 
 
@@ -29,3 +31,10 @@ class UserRegisterView(APIView):
         user = create_user(**serializer.validated_data)
 
         return Response()
+
+
+class SellerListView(APIView):
+    def get(self, request, *args, **kwargs):
+        profiles = UserProfile.objects.filter(user_type='seller')
+        serializer = UserProfileSerializer(profiles, many=True)
+        return Response(serilizer.data)

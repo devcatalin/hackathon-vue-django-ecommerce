@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 
@@ -34,6 +35,7 @@ class Subcategory(models.Model):
         return f'{self.category.title} - {self.title} - {self.slug}'
 
 class Product(models.Model):
+    owner = models.ForeignKey(User, related_name="products", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()

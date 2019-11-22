@@ -31,3 +31,16 @@ class ProductListView(APIView):
             products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+
+
+class SellerProductListView(APIView):
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.filter(owner=request.user)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+
+class ProductCreateView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        pass
