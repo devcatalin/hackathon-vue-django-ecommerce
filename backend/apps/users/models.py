@@ -13,16 +13,17 @@ class UserProfile(models.Model):
         ('company', 'Company')
     )
 
-    user = models.OneToOneField(User, related_name="buyer", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
+    full_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     address = models.CharField(max_length=255)
     buyer_type = models.CharField(max_length=10, choices=BUYER_TYPE_CHOICES)
 
-    @property
-    def is_seller(self):
-        return user_type == 'seller'
+    # @property
+    # def is_seller(self):
+    #     return user_type == 'seller'
 
-    @property
-    def is_buyer(self):
-        return user_type == 'buyer'
+    # @property
+    # def is_buyer(self):
+    #     return user_type == 'buyer'

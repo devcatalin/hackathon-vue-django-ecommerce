@@ -20,7 +20,7 @@ def create_user(
             username=username,
             email=email,
             password=password
-            )
+        )
     except Exception as e:
         raise ValidationError(e)
 

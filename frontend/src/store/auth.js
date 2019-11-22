@@ -1,9 +1,19 @@
-import axios from "axios";
+import http from "@/http";
 
 export const authModule = {
   state: {
     token: localStorage.getItem("token") || "",
-    user: {}
+    user: {
+      username: "",
+      email: "",
+      profile: {
+        user_type: "",
+        full_name: "",
+        phone_number: "",
+        address: "",
+        buyer_type: ""
+      }
+    }
   },
   getters: {
     isAuthenticated: state => !!state.token
@@ -14,14 +24,23 @@ export const authModule = {
     },
     logout(state) {
       state.token = "";
+    },
+    setUserData(state, user) {
+      state.user = user;
     }
   },
   actions: {
+    async fetchUserData({commit}) {
+      commit('loading', true);
+      const response = await http.get('/api/users/profile/detail/');
+      commit('loading', false);
+      commit('setUserData', response.data);
+    },
     login({commit}, payload){
       const { username, password } = payload;
       return new Promise((resolve, reject) => {
         commit('loading', true);
-        axios.post("/api/users/token/", {
+        http.post("/api/users/token/", {
           username,
           password
         }).then(response => {
@@ -42,7 +61,7 @@ export const authModule = {
       const {username, email, password} = payload;
       return new Promise((resolve, reject) => {
           commit('loading', true);
-          axios.post("/api/users/register/", {
+          http.post("/api/users/register/", {
             username,
             email,
             password

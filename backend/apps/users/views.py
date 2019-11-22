@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 
 from .models import UserProfile
 
+from .serializers import UserSerializer
+
 from . import services
 
 
@@ -31,6 +33,12 @@ class UserRegisterView(APIView):
         user = create_user(**serializer.validated_data)
 
         return Response()
+
+
+class UserProfileDetailView(APIView):
+    def get(self, request, *args, **kwargs):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
 
 
 class SellerListView(APIView):

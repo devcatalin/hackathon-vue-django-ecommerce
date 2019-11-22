@@ -1,4 +1,4 @@
-import axios from 'axios';
+import http from '@/http';
 
 export const productsModule = {
   state: {
@@ -15,7 +15,7 @@ export const productsModule = {
   actions: {
     async getProducts({commit}, subcategory=null) {
       commit('loading', true);
-      const response = await axios.get(`/api/shop/products/`, {
+      const response = await http.get(`/api/shop/products/`, {
         params: {
           subcategory
         }
