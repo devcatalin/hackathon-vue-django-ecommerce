@@ -59,15 +59,18 @@
         </div>
 
         <sidebar />
-        <div>
-            <product-grid
-                v-if="viewOption === 'Grid'"
-                title="Rosii"
-                :price="215.28"
-            />
-            <product-list v-else-if="viewOption === 'List'" />
-            <map-view v-else />
+        <div class="grid-view" v-if="viewOption === 'Grid'">
+            <product-grid title="Rosii" :price="215.28" />
+            <product-grid title="Rosii" :price="215.28" />
+            <product-grid title="Rosii" :price="215.28" />
+            <product-grid title="Rosii" :price="215.28" />
         </div>
+        <div v-else-if="viewOption === 'List'">
+            <product-list />
+            <product-list />
+        </div>
+
+        <map-view v-else />
     </div>
 </template>
 
@@ -111,5 +114,12 @@ i {
 
 .z-index {
     z-index: 10;
+}
+
+.grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-template-rows: min-content;
+    grid-row-gap: 4rem;
 }
 </style>
