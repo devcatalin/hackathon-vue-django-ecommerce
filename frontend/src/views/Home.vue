@@ -1,115 +1,91 @@
 <template>
-    <div class="home-main p-t-lg p-l-sm">
-        <span></span>
-        <div class="sorting-panel m-b-sm">
-            <span class="m-r-sm">Ordoneaza dupa:</span>
-            <b-dropdown
-                v-model="sortOption"
-                aria-role="list"
-                class="m-r-lg z-index"
-            >
-                <button class="button is-primary" type="button" slot="trigger">
-                    <template v-if="sortOption === 'Pret crescator'">
-                        <span>Pret crescator</span>
-                    </template>
-                    <template v-else-if="sortOption === 'Pret descrescator'">
-                        <span>Pret descrescator</span>
-                    </template>
-                    <template v-else>
-                        <span>Locatie</span>
-                    </template>
-                    <b-icon icon="menu-down"></b-icon>
-                </button>
-
-                <b-dropdown-item value="Pret crescator" aria-role="listitem"
-                    >Pret crescator</b-dropdown-item
-                >
-                <b-dropdown-item value="Pret descrescator" aria-role="listitem"
-                    >Pret descrescator</b-dropdown-item
-                >
-                <b-dropdown-item value="Locatie" aria-role="listitem"
-                    >Locatie</b-dropdown-item
-                >
-            </b-dropdown>
-            <span class="m-r-sm">Tip afisare:</span>
-            <b-dropdown aria-role="list" v-model="viewOption" class="z-index">
-                <button class="button is-primary" type="button" slot="trigger">
-                    <template v-if="viewOption === 'Grid'">
-                        <span>Grid</span>
-                    </template>
-                    <template v-else-if="viewOption === 'List'">
-                        <span>List</span>
-                    </template>
-                    <template v-else>
-                        <span>Harta</span>
-                    </template>
-                    <b-icon icon="menu-down"></b-icon>
-                </button>
-
-                <b-dropdown-item value="Grid" aria-role="listitem"
-                    >Grid</b-dropdown-item
-                >
-                <b-dropdown-item value="List" aria-role="listitem"
-                    >Lista</b-dropdown-item
-                >
-                <b-dropdown-item value="Harta" aria-role="listitem"
-                    >Harta</b-dropdown-item
-                >
-            </b-dropdown>
-        </div>
-
-        <sidebar />
-        <div>
-            <product-grid
-                v-if="viewOption === 'Grid'"
-                title="Rosii"
-                :price="215.28"
-            />
-            <product-list v-else-if="viewOption === 'List'" />
-            <map-view v-else />
-        </div>
+    <div>
+        <h1>Locul unde găsești cele mai bune produse românești</h1>
+        <svg viewBox="45 60 400 320" xmlns="http://www.w3.org/2000/svg">
+            <path
+                fill="#fff"
+                d="M 90 210 C 90 180 90 150 90 150 C 150 150 180 150 180 150 C 180 150 300 150 300 150 C 300 150 330 150 390 150 C 390 150 390 180 390 210 C 390 240 390 270 390 270 C 330 270 300 270 300 270 C 300 270 180 270 180 270 C 180 270 150 270 90 270 C 90 270 90 240 90 210"
+                mask="url(#knockout-text)"
+            ></path>
+            <mask id="knockout-text">
+                <rect width="100%" height="100%" fill="#fff" x="0" y="0" />
+                <text x="147" y="227" fill="#000">Explorează</text>
+            </mask>
+        </svg>
     </div>
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
-import ProductGrid from "../components/ProductGrid.vue";
-import ProductList from "../components/ProductList.vue";
-import MapView from "../components/MapView.vue";
-export default {
-    components: { Sidebar, ProductGrid, ProductList, MapView },
-    data() {
-        return {
-            sortOption: "Pret crescator",
-            viewOption: "Grid"
-        };
-    }
-};
+export default {};
 </script>
 
-<style>
-.home-main {
-    min-height: 100vh;
+<style lang="scss" scoped>
+div {
+    position: relative;
+    height: 90vh;
+    background-image: url("/romania_farm.jpg");
+    background-size: cover;
+    background-position: center;
+
     display: grid;
-    grid-template-columns: 15rem 1fr;
-    grid-column-gap: 2rem;
-    grid-row-gap: 0.8rem;
+    justify-content: center;
+    align-content: center;
 }
 
-.highlight {
-    color: blue;
+h1 {
+    font-size: 5rem;
+    color: white;
+    text-align: center;
+    font-family: "Gloria Hallelujah", cursive;
+    text-shadow: 5px 3px 0px rgba(0, 0, 0, 1);
+    transform: translateY(-25%);
+    padding: 4.5rem;
+}
+svg {
+    width: 80vw;
+    position: fixed;
+    bottom: 1vh;
+    left: 50vw;
+    max-width: 430px;
+    transform: translateX(-50%);
+    z-index: 2;
+
+    filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.3));
+
+    path {
+        cursor: pointer;
+        animation: blob 2s infinite forwards;
+        transform-origin: 50% 50%;
+
+        &:hover {
+            fill: #fafafa;
+        }
+    }
+
+    text {
+        font-size: 45px;
+        transform: translateX(-6.5%);
+        font-family: "Raleway", sans-serif;
+    }
 }
 
-.sorting-panel {
-    display: flex;
-    align-items: center;
-}
-
-i {
-    cursor: pointer;
-}
-
-.z-index {
-    z-index: 10;
+@keyframes blob {
+    25% {
+        d: path(
+            "M 90 210 C 90 180 110 160 130 160 C 160 160 180 140 200 130 C 230 120 270 100 290 140 C 310 170 340 100 360 140 C 370 160 390 180 390 210 C 390 240 380 290 350 280 C 330 270 300 280 280 290 C 260 300 230 300 220 290 C 200 270 160 310 140 280 C 130 260 90 240 90 210 "
+        );
+        transform: rotate(-5deg);
+    }
+    50% {
+        d: path(
+            "M 90 210 C 90 180 100 150 120 130 C 150 100 180 140 200 130 C 230 120 270 100 290 140 C 300 160 330 130 360 140 C 390 150 390 180 390 210 C 390 240 380 300 350 280 C 330 270 320 230 280 260 C 260 280 220 310 200 290 C 180 270 160 280 140 280 C 110 280 90 240 90 210"
+        );
+    }
+    75% {
+        d: path(
+            "M 90 210 C 90 180 110 180 130 170 C 150 160 170 130 200 130 C 240 130 260 150 290 140 C 310 130 340 120 360 140 C 380 160 390 180 390 210 C 390 240 380 260 350 270 C 320 280 290 270 270 260 C 240 250 230 280 210 290 C 180 310 130 300 110 280 C 90 260 90 240 90 210"
+        );
+        transform: rotate(5deg);
+    }
 }
 </style>
