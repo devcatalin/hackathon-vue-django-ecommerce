@@ -31,7 +31,7 @@ import RegisterForm from "../components/RegisterForm.vue";
 // import AddressSearch from "../components/AddressSearch.vue";
 
 export default {
-  components: { RegisterForm, AddressSearch },
+  components: { RegisterForm },
   data() {
     return {
       username: "",

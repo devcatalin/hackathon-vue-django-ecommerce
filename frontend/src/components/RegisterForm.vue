@@ -29,7 +29,7 @@
         <b-radio v-model="radio" name="type" native-value="Company">Companie</b-radio>
       </div>
     </b-field>
-    <Button text="Register" />
+    <Button text="Inregistreaza-te" />
   </form>
 </template>
 
