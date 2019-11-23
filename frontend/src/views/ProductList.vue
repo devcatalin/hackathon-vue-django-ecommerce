@@ -2,7 +2,7 @@
     <div class="home-main p-t-lg p-l-sm">
         <span></span>
         <div class="sorting-panel m-b-sm">
-            <span class="m-r-sm">Ordoneaza dupa:</span>
+            <span class="m-r-sm">Ordonează după:</span>
             <b-dropdown
                 v-model="selectedSortOption"
                 aria-role="list"
@@ -22,17 +22,17 @@
                     >{{ sortOption.label }}</b-dropdown-item
                 >
             </b-dropdown>
-            <span class="m-r-sm">Tip afisare:</span>
+            <span class="m-r-sm">Tip afișare:</span>
             <b-dropdown aria-role="list" v-model="viewOption" class="z-index">
                 <button class="button is-primary" type="button" slot="trigger">
                     <template v-if="viewOption === 'Grid'">
                         <span>Grid</span>
                     </template>
                     <template v-else-if="viewOption === 'List'">
-                        <span>List</span>
+                        <span>Listă</span>
                     </template>
                     <template v-else>
-                        <span>Harta</span>
+                        <span>Hartă</span>
                     </template>
                     <b-icon icon="menu-down"></b-icon>
                 </button>
@@ -41,10 +41,10 @@
                     >Grid</b-dropdown-item
                 >
                 <b-dropdown-item value="List" aria-role="listitem"
-                    >Lista</b-dropdown-item
+                    >Listă</b-dropdown-item
                 >
                 <b-dropdown-item value="Harta" aria-role="listitem"
-                    >Harta</b-dropdown-item
+                    >Hartă</b-dropdown-item
                 >
             </b-dropdown>
         </div>
@@ -83,11 +83,11 @@ export default {
             viewOption: "Grid",
             sortOptions: [
                 {
-                    label: "Pret crescator",
+                    label: "Preț crescător",
                     slug: "price"
                 },
                 {
-                    label: "Pret descrescator",
+                    label: "Preț descrescător",
                     slug: "-price"
                 },
                 {
@@ -99,16 +99,16 @@ export default {
                     slug: "-title"
                 },
                 {
-                    label: "Vanzatori A-Z",
+                    label: "Vânzători A-Z",
                     slug: "owner__profile__full_name"
                 },
                 {
-                    label: "Vanzatori Z-A",
+                    label: "Vânzători Z-A",
                     slug: "-owner__profile__full_name"
                 }
             ],
             selectedSortOption: {
-                label: "Pret crescator",
+                label: "Preț crescător",
                 slug: "price"
             }
         };

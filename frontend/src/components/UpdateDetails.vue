@@ -4,7 +4,7 @@
             <b-field label="Nume">
                 <b-input type="text" v-model="name"></b-input>
             </b-field>
-            <b-field label="Numar de telefon" message="Format: 0123-456-789">
+            <b-field label="Număr de telefon" message="Format: 0123-456-789">
                 <b-input
                     v-model="phone_number"
                     type="tel"
@@ -16,10 +16,10 @@
                 <b-input v-model="email" type="email" required />
             </b-field>
             <div class="full-columns m-b-md">
-                <label class="label">Adresa</label>
+                <label class="label">Adresă</label>
                 <address-search @change="updateAddress" />
             </div>
-            <button class="button is-primary" type="submit">Salveaza</button>
+            <button class="button is-primary" type="submit">Salvează</button>
         </form>
     </div>
 </template>

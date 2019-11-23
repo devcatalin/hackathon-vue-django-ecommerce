@@ -34,7 +34,7 @@
                 </b-menu>
             </b-tab-item>
 
-            <b-tab-item label="Producatori">
+            <b-tab-item label="Producători">
                 <div
                     class="field m-b-sm"
                     style="border-bottom: 1px solid; padding-bottom: 10px;"
