@@ -96,4 +96,8 @@ p {
   font-family: "Boogaloo", cursive;
   font-size: 1.8rem;
 }
+
+.z-index {
+  z-index: 10000;
+}
 </style>
