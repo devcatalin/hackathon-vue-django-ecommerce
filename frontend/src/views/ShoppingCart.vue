@@ -72,7 +72,7 @@
       </div>
       <div v-if="address == 'newAddress'" class="full-columns m-b-md">
         <label class="label">Adresa</label>
-        <address-search />
+        <address-search :required="true" />
       </div>
     </div>
     <div class="payment-panel card p-lg m-t-lg m-b-md">

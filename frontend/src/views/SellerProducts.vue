@@ -47,9 +47,11 @@
 
 <script>
 import ProductCreate from "../views/ProductCreate.vue";
+import UserProfile from "../components/Profile.vue";
 
 export default {
   components: {
+    UserProfile,
     ProductCreate
   },
   data() {

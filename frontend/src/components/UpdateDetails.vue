@@ -2,17 +2,22 @@
   <div class="product-create">
     <form v-on:submit.prevent="updateProfile" class="card p-lg">
       <b-field label="Nume complet">
-        <b-input type="text" v-model="full_name"></b-input>
+        <b-input type="text" :placeholder="user.profile.full_name" v-model="full_name"></b-input>
       </b-field>
       <b-field label="Număr de telefon" message="Format: 0123-456-789">
-        <b-input v-model="phone_number" type="tel" pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}" required />
+        <b-input
+          :placeholder="user.profile.phone_number"
+          v-model="phone_number"
+          type="tel"
+          pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}"
+        />
       </b-field>
       <b-field label="Email">
-        <b-input v-model="email" type="email" required />
+        <b-input :placeholder="user.email" v-model="email" type="email" />
       </b-field>
       <div class="full-columns m-b-md">
         <label class="label">Adresă</label>
-        <address-search @change="updateAddress" />
+        <address-search :required="false" @change="updateAddress" />
       </div>
       <button class="button is-primary" type="submit">Salvează</button>
     </form>

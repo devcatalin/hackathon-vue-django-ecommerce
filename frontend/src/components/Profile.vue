@@ -12,7 +12,7 @@
       </h2>
       <h2 class="m-b-sm">
         Email:
-        <span>{{ user.profile.email }}</span>
+        <span>{{ user.email }}</span>
       </h2>
       <h2 class="m-b-sm">
         Număr de telefon:
