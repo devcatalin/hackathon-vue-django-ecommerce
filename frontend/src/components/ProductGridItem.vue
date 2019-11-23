@@ -9,12 +9,12 @@
             <p>Vândut de: {{ product.seller }}</p>
         </div>
         <router-link to="/login" v-if="!isAuthenticated">
-            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga
-            in cos
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
+            în coș
         </router-link>
         <a @click.prevent="addProductToCart" v-else>
-            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga
-            in cos
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
+            în coș
         </a>
     </div>
 </template>

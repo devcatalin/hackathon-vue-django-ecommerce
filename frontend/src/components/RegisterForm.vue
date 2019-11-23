@@ -10,7 +10,7 @@
             <b-field :label="fullNameLabel">
                 <b-input v-model="full_name" type="text" required />
             </b-field>
-            <b-field label="Numar de telefon" message="Format: 0123-456-789">
+            <b-field label="Număr de telefon" message="Format: 0123-456-789">
                 <b-input
                     v-model="phone_number"
                     type="tel"
@@ -20,14 +20,14 @@
             </b-field>
 
             <div class="full-columns m-b-md">
-                <label class="label">Adresa</label>
+                <label class="label">Adresă</label>
                 <address-search @change="updateAddress" />
             </div>
 
             <!-- <b-field label="Adresa" class="full-columns">
         <b-input v-model="address" type="text" />
       </b-field>-->
-            <b-field label="Parola">
+            <b-field label="Parolă">
                 <b-input
                     type="password"
                     v-model="password"
@@ -36,7 +36,7 @@
                 />
             </b-field>
             <b-field
-                label="Confirmare parola"
+                label="Confirmare parolă"
                 :type="confirmPasswordValid"
                 :message="passwordMessage"
             >
@@ -62,7 +62,7 @@
             </div>
         </b-field>
         <button class="button is-primary" type="submit">
-            Inregistreaza-te
+            Înregistrează-te
         </button>
     </form>
 </template>

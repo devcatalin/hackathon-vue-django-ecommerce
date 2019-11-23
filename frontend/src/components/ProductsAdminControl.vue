@@ -31,18 +31,18 @@
         <b-modal :active.sync="productDelete" has-modal-card :can-cancel="true">
             <div class="card p-md modal-content">
                 <h3 class="m-b-lg">
-                    Sunteti siguri ca doriti sa stergeti acest anunt?
+                    Sunteți siguri că doriți să ștergeți acest anunț?
                 </h3>
                 <div class="flex-align">
                     <b-button type="is-primary" @click="setProductDelete"
-                        >Anuleaza</b-button
+                        >Anulează</b-button
                     >
-                    <b-button type="is-danger">Confirma</b-button>
+                    <b-button type="is-danger">Confirmă</b-button>
                 </div>
             </div>
         </b-modal>
 
-        <h2 class="m-t-xl level-right">Numar de anunturi: 1</h2>
+        <h2 class="m-t-xl level-right">Număr de anunțuri: 1</h2>
     </div>
 </template>
 

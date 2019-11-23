@@ -8,7 +8,7 @@
                 <b-upload v-model="thumbnail">
                     <a class="button is-primary">
                         <b-icon icon="upload"></b-icon>
-                        <span>Adaugare poza</span>
+                        <span>Adăugare poză</span>
                     </a>
                 </b-upload>
                 <span class="file-name" v-if="thumbnail">{{
@@ -20,20 +20,20 @@
             </b-field>
             <div class="flex-align">
                 <b-field>
-                    <b-select placeholder="Selectati o categorie" required>
+                    <b-select placeholder="Selectați o categorie" required>
                         <option value="legume">Legume</option>
                         <option value="fructe">Fructe</option>
                     </b-select>
                 </b-field>
                 <b-field>
-                    <b-select placeholder="Selectati o subcategorie" required>
+                    <b-select placeholder="Selectați o subcategorie" required>
                         <option value="rosii">Rosii</option>
                         <option value="cartofi">Cartofi</option>
                     </b-select>
                 </b-field>
             </div>
 
-            <b-field label="Unitate de masura">
+            <b-field label="Unitate de măsura">
                 <div class="block">
                     <b-radio
                         v-model="quantity_type"
@@ -53,7 +53,7 @@
                 <b-field label="Cantitate">
                     <b-input min="0" type="number" v-model="price"></b-input>
                 </b-field>
-                <b-field label="Pret pe unitate">
+                <b-field label="Preț pe unitate">
                     <b-input type="number" v-model="price"></b-input>
                 </b-field>
             </div>

@@ -31,18 +31,18 @@
         <b-modal :active.sync="userDelete" has-modal-card :can-cancel="true">
             <div class="card p-md modal-content">
                 <h3 class="m-b-lg">
-                    Sunteti siguri ca doriti sa stergeti acest utilizator?
+                    Sunteți siguri că doriți să ștergeți acest utilizator?
                 </h3>
                 <div class="flex-align">
                     <b-button type="is-primary" @click="setUserDelete"
-                        >Anuleaza</b-button
+                        >Anulează</b-button
                     >
-                    <b-button type="is-danger">Confirma</b-button>
+                    <b-button type="is-danger">Confirmă</b-button>
                 </div>
             </div>
         </b-modal>
 
-        <h2 class="m-t-xl level-right">Numar de utilizatori: 1</h2>
+        <h2 class="m-t-xl level-right">Număr de utilizatori: 1</h2>
     </div>
 </template>
 
