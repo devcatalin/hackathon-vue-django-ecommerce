@@ -2,9 +2,13 @@
   <div class="map-view">
     <l-map :zoom="7" :center="[46.023546, 24.8259625]" class="map">
       <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
-      <l-marker v-for="location in locations" :key="location.title" :lat-lng="location.latlong">
+      <l-marker
+        v-for="seller in sellers"
+        :key="seller.username"
+        :lat-lng="[seller.longitude, seller.latitude]"
+      >
         <l-popup>
-          <h2>{{ location.title }}</h2>
+          <h2>{{ seller.full_name }}</h2>
         </l-popup>
       </l-marker>
     </l-map>
@@ -12,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
 export default {
   components: {
@@ -20,10 +25,8 @@ export default {
     LMarker,
     LPopup
   },
-  data() {
-    return {
-      locations: [{ latlong: [46.023546, 24.8259625], title: "Nume firma" }]
-    };
+  computed: {
+    ...mapGetters(["sellers"])
   }
 };
 </script>

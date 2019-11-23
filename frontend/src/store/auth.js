@@ -17,7 +17,8 @@ export const authModule = {
   },
   getters: {
     isAuthenticated: state => !!state.token,
-    isSeller: state => state.user.profile.user_type === "seller"
+    isSeller: state => state.user.profile.user_type === "seller",
+    user: state => state.user
   },
   mutations: {
     auth_success(state, token) {
@@ -61,34 +62,11 @@ export const authModule = {
       });
     },
     register({ commit }, payload) {
-      console.log(payload);
-      // const {
-      //   username,
-      //   user_type,
-      //   email,
-      //   full_name,
-      //   phone_number,
-      //   address,
-      //   latitude,
-      //   longitude,
-      //   password,
-      //   buyer_type
-      // } = payload;
       return new Promise((resolve, reject) => {
         commit("loading", true);
         http
           .post("/api/users/register/", {
             ...payload
-            // username,
-            // user_type,
-            // email,
-            // full_name,
-            // phone_number,
-            // address,
-            // latitude,
-            // longitude,
-            // password,
-            // buyer_type
           })
           .then(() => {
             commit("loading", false);

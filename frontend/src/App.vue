@@ -17,7 +17,6 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("fetchCategories");
-    this.$store.dispatch("fetchSellers");
     this.$store.dispatch("getCart");
     if (this.isAuthenticated) {
       this.$store.dispatch("fetchUserData");
@@ -29,46 +28,17 @@ export default {
 <style lang="scss">
 body {
   background-color: #eeeeee;
-}
-$sizeUnit: rem;
-$marginKey: "m";
-$paddingKey: "p";
-$separator: "-";
-$sizes: (
-  ("none", 0),
-  ("xxs", 0.125),
-  ("xs", 0.25),
-  ("sm", 0.5),
-  ("md", 1),
-  ("lg", 2),
-  ("xl", 4),
-  ("xxl", 8)
-);
-$positions: (("t", "top"), ("r", "right"), ("b", "bottom"), ("l", "left"));
-
-@function sizeValue($key, $value) {
-  @return if($key == "none", 0, $value + $sizeUnit);
+  min-height: 100vh;
 }
 
-@each $size in $sizes {
-  $sizeKey: nth($size, 1);
-  $sizeValue: nth($size, 2);
-  .#{$marginKey}#{$separator}#{$sizeKey} {
-    margin: sizeValue($sizeKey, $sizeValue);
-  }
-  .#{$paddingKey}#{$separator}#{$sizeKey} {
-    padding: sizeValue($sizeKey, $sizeValue);
-  }
-  @each $position in $positions {
-    $posKey: nth($position, 1);
-    $posValue: nth($position, 2);
-    .#{$marginKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
-      margin-#{$posValue}: sizeValue($sizeKey, $sizeValue);
-    }
-    .#{$paddingKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
-      padding-#{$posValue}: sizeValue($sizeKey, $sizeValue);
-    }
-  }
+.flex-align {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
 }
 
 *,
@@ -84,6 +54,7 @@ $positions: (("t", "top"), ("r", "right"), ("b", "bottom"), ("l", "left"));
 }
 
 html {
+  background-color: #eeeeee !important;
   box-sizing: border-box;
   font-size: 62.5%; /* 1rem = 10px */
 }
@@ -164,4 +135,45 @@ $link-focus-border: $primary;
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+$sizeUnit: rem;
+$marginKey: "m";
+$paddingKey: "p";
+$separator: "-";
+$sizes: (
+  ("none", 0),
+  ("xxs", 0.125),
+  ("xs", 0.25),
+  ("sm", 0.5),
+  ("md", 1),
+  ("lg", 2),
+  ("xl", 4),
+  ("xxl", 8)
+);
+$positions: (("t", "top"), ("r", "right"), ("b", "bottom"), ("l", "left"));
+
+@function sizeValue($key, $value) {
+  @return if($key == "none", 0, $value + $sizeUnit);
+}
+
+@each $size in $sizes {
+  $sizeKey: nth($size, 1);
+  $sizeValue: nth($size, 2);
+  .#{$marginKey}#{$separator}#{$sizeKey} {
+    margin: sizeValue($sizeKey, $sizeValue);
+  }
+  .#{$paddingKey}#{$separator}#{$sizeKey} {
+    padding: sizeValue($sizeKey, $sizeValue);
+  }
+  @each $position in $positions {
+    $posKey: nth($position, 1);
+    $posValue: nth($position, 2);
+    .#{$marginKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
+      margin-#{$posValue}: sizeValue($sizeKey, $sizeValue);
+    }
+    .#{$paddingKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
+      padding-#{$posValue}: sizeValue($sizeKey, $sizeValue);
+    }
+  }
+}
 </style>

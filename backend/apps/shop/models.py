@@ -46,6 +46,7 @@ class Product(models.Model):
     description = models.TextField()
     thumbnail = models.ImageField()
     quantity_type = models.CharField(max_length=5, choices=QUANTITY_TYPE_CHOICES)
+    quantity = models.DecimalField(max_digits=6, decimal_places=2)
     subcategory = models.ForeignKey(Subcategory, related_name="products", on_delete=models.CASCADE)
     slug = models.SlugField(blank=True)
 

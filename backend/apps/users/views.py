@@ -64,7 +64,7 @@ class SellerListView(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         profiles = UserProfile.objects.filter(user_type='seller')
         serializer = UserProfileSerializer(profiles, many=True)
         return Response(serializer.data)

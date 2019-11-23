@@ -1,5 +1,5 @@
 <template>
-  <b-navbar type="is-primary" :spaced="true" :shadow="true" :fixed-top="true">
+  <b-navbar type="is-primary" :spaced="true" :fixed-top="true">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/home' }">
         <p>LocalGoods</p>
@@ -19,19 +19,24 @@
       </router-link>
       <b-dropdown aria-role="menu" hoverable position="is-bottom-left">
         <b-button slot="trigger" type="is-primary" to="/shopping-cart" tag="router-link">
-          <span>Cos de cumparaturi</span>
+          <b-icon icon="cart" />
+          <span
+            style="font-weight: 700; background-color: black; border-radius: 50%; width: 25px; display:inline-block;"
+          >{{cartItems.length}}</span>
           <b-icon icon="menu-down"></b-icon>
         </b-button>
         <b-dropdown-item custom aria-role="menuitem">
           <div class="shopping-cart-dropdown">
             <div>
-              <router-link to="/shopping-cart">
-                {{ cartItems.length }} produse in
-                cos
-              </router-link>
-              <p>{{ sumCartItems }} Lei</p>
+              <router-link to="/shopping-cart">{{ cartItems.length }} produse in cos</router-link>
+              <p>{{ cartTotal }} Lei</p>
             </div>
-            <b-button size="is-small" class="is-primary">Trimite comanda</b-button>
+            <b-button
+              to="/shopping-cart"
+              size="is-small"
+              class="is-primary"
+              tag="router-link"
+            >Trimite comanda</b-button>
           </div>
         </b-dropdown-item>
       </b-dropdown>
@@ -39,7 +44,7 @@
     </template>
     <template slot="end" v-if="isAuthenticated && isSeller">
       <router-link to="/seller-products" exact v-slot="{ isActive, navigate }">
-        <b-navbar-item @click="navigate">Lista produse</b-navbar-item>
+        <b-navbar-item @click="navigate">Contul meu</b-navbar-item>
       </router-link>
       <b-navbar-item @click="logout">Deconectare</b-navbar-item>
     </template>
@@ -51,14 +56,7 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["isAuthenticated", "cartItems", "isSeller"]),
-    sumCartItems() {
-      let sum = 0;
-      for (let i = 0; i < this.cartItems.length; i++) {
-        sum += this.cartItems[i].price;
-      }
-      return sum;
-    }
+    ...mapGetters(["isAuthenticated", "cartItems", "isSeller", "cartTotal"])
   },
   methods: {
     logout() {

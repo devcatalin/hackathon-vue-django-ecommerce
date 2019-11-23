@@ -28,4 +28,14 @@ class ProductSerializer(serializers.ModelSerializer):
     seller = serializers.CharField(source="owner.username")
     class Meta:
         model = Product
-        fields = ['seller', 'slug', 'title', 'price', 'description', 'thumbnail', 'category', 'subcategory']
+        fields = [
+            'seller',
+            'slug',
+            'title',
+            'price',
+            'description',
+            'quantity_type',
+            'thumbnail',
+            'category',
+            'subcategory'
+        ]
