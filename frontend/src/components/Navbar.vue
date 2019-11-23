@@ -44,6 +44,11 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      isSeller: false
+    };
+  },
   computed: {
     ...mapGetters(["isAuthenticated", "cartItems"]),
     sumCartItems() {

@@ -58,13 +58,33 @@ export const authModule = {
       })
     },
     register({commit}, payload) {
-      const {username, email, password} = payload;
+      console.log(payload);
+      // const {
+      //   username,
+      //   user_type,
+      //   email,
+      //   full_name,
+      //   phone_number,
+      //   address,
+      //   latitude,
+      //   longitude,
+      //   password,
+      //   buyer_type
+      // } = payload;
       return new Promise((resolve, reject) => {
           commit('loading', true);
           http.post("/api/users/register/", {
-            username,
-            email,
-            password
+            ...payload
+            // username,
+            // user_type,
+            // email,
+            // full_name,
+            // phone_number,
+            // address,
+            // latitude,
+            // longitude,
+            // password,
+            // buyer_type
           }).then(() => {
             commit("loading", false);
             resolve();

@@ -18,6 +18,8 @@ class UserProfile(models.Model):
     full_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     address = models.CharField(max_length=255)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
     buyer_type = models.CharField(max_length=10, choices=BUYER_TYPE_CHOICES)
 
     # @property

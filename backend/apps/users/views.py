@@ -18,12 +18,14 @@ class UserRegisterView(APIView):
 
     class InputSerializer(serializers.Serializer):
         username = serializers.CharField()
-        email = serializers.EmailField()
-        password = serializers.CharField()
         user_type = serializers.CharField()
+        email = serializers.EmailField()
         full_name = serializers.CharField()
         phone_number = serializers.CharField()
         address = serializers.CharField()
+        latitude = serializers.DecimalField(max_digits=9, decimal_places=6)
+        longitude = serializers.DecimalField(max_digits=9, decimal_places=6)
+        password = serializers.CharField()
         buyer_type = serializers.CharField()
 
     def post(self, request, *args, **kwargs):

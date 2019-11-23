@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <b-tabs type="is-boxed" expanded="true">
+    <b-tabs type="is-boxed" :expanded="true">
       <b-tab-item>
         <template slot="header">
           <b-icon icon="cart-plus"></b-icon>
@@ -9,6 +9,7 @@
         <register-form
           buyerTypeLabel="Ce tip de cumparator esti ?"
           fullNameLabel="Nume si prenume"
+          user_type="buyer"
         />
       </b-tab-item>
       <b-tab-item>
@@ -19,16 +20,15 @@
         <register-form
           buyerTypeLabel="Ce tip de cumparatori vrei sa ai ?"
           fullNameLabel="Denumire companie"
+          user_type="seller"
         />
       </b-tab-item>
-      <!-- <address-search @change="e => address = e.suggestion" /> -->
     </b-tabs>
   </div>
 </template>
 
 <script>
 import RegisterForm from "../components/RegisterForm.vue";
-// import AddressSearch from "../components/AddressSearch.vue";
 
 export default {
   components: { RegisterForm },
@@ -59,9 +59,6 @@ export default {
     }
   },
   methods: {
-    test(event) {
-      console.log(event);
-    },
     register() {
       if (this.password !== this.confirmPassword) return;
       let username = this.username;

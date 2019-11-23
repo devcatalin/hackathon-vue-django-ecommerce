@@ -7,12 +7,14 @@ from .models import UserProfile
 def create_user(
     *,
     username,
-    email,
-    password,
     user_type,
+    email,
     full_name,
     phone_number,
     address,
+    latitude,
+    longitude,
+    password,
     buyer_type
 ):
     try:
@@ -26,17 +28,17 @@ def create_user(
 
     try:
         profile = UserProfile.objects.create(
+            user = user,
             user_type=user_type,
             full_name=full_name,
             phone_number=phone_number,
             address=address,
+            latitude=latitude,
+            longitude=longitude,
             buyer_type=buyer_type
         )
     except Exception as e:
         raise ValidationError(e)
-
-    user.profile = profile
-    user.save()
 
     return User.objects.get(username=username)
 

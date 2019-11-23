@@ -1,24 +1,19 @@
 <template>
   <div class="login card">
-    <form v-on:submit.prevent class="card p-lg">
+    <form v-on:submit.prevent="login" class="card p-lg">
       <b-field label="Nume de utilizator">
-        <b-input v-model="username"></b-input>
+        <b-input v-model="username" required />
       </b-field>
       <b-field label="Parola">
-        <b-input v-model="password"></b-input>
+        <b-input v-model="password" type="password" password-reveal required />
       </b-field>
-      <Button text="Autentificare" />
+      <button type="submit" class="button is-primary">Autentificare</button>
     </form>
   </div>
 </template>
 
 <script>
-import Button from "@/components/Button.vue";
-
 export default {
-  components: {
-    Button
-  },
   data() {
     return {
       username: "",
