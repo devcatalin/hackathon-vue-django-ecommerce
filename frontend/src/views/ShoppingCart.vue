@@ -125,9 +125,6 @@ export default {
   computed: {
     ...mapGetters(["cartItems", "cartTotal"])
   },
-  mounted() {
-    console.log(this.cartItems);
-  },
   methods: {
     cancelDeleteProduct() {
       this.deleteProductModal = {
@@ -145,7 +142,6 @@ export default {
       };
     },
     deleteProductFromCart() {
-      console.log("sterge-l!");
       this.$store.dispatch("removeCartItem", {
         ...this.deleteProductModal.product
       });

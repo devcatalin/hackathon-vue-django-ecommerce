@@ -48,7 +48,6 @@ export const shoppingCartModule = {
       commit('addCartItem', item);
     },
     removeCartItem({ commit }, item) {
-      console.log("ajunge aici", item);
       commit('removeCartItem', item);
     }
   }

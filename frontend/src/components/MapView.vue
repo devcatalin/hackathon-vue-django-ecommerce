@@ -27,9 +27,6 @@ export default {
   },
   computed: {
     ...mapGetters(["sellers"])
-  },
-  mounted() {
-    console.log(this.sellers);
   }
 };
 </script>

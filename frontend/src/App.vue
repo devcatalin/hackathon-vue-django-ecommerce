@@ -17,7 +17,6 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("fetchCategories");
-    this.$store.dispatch("fetchSellers");
     this.$store.dispatch("getCart");
     if (this.isAuthenticated) {
       this.$store.dispatch("fetchUserData");
@@ -55,6 +54,7 @@ body {
 }
 
 html {
+  background-color: #eeeeee !important;
   box-sizing: border-box;
   font-size: 62.5%; /* 1rem = 10px */
 }
