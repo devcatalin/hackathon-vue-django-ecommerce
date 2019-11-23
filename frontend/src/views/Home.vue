@@ -61,8 +61,7 @@ export default {
       sortOption: "Pret crescator",
       viewOption: "Grid"
     };
-  },
-  methods: {}
+  }
 };
 </script>
 

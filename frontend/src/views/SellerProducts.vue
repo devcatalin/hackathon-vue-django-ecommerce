@@ -1,6 +1,14 @@
 <template>
   <div class="seller-products m-xl">
-    <div class="m-b-xl">
+    <div class="flex-center">
+      <b-button
+        type="is-primary"
+        class="m-b-lg flex-center"
+        @click="updateProduct = true"
+      >Adauga produs nou</b-button>
+    </div>
+
+    <div>
       <b-table bordered="true" :data="data">
         <template slot-scope="props">
           <b-table-column width="200" field="name" label="Nume produs">{{props.row.name}}</b-table-column>
@@ -52,6 +60,7 @@ export default {
     return {
       updateProduct: false,
       deleteProduct: false,
+      addProducts: false,
       data: [
         {
           name: "Rosii roz",
@@ -134,5 +143,10 @@ h3 {
 .flex-align {
   display: flex;
   justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -5,17 +5,24 @@
       <h2 class="m-b-sm">{{title}}</h2>
       <p>{{price}} Lei</p>
     </div>
-    <a href="#">
+    <router-link to="/login" v-if="!isAuthenticated">
+      <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga in cos
+    </router-link>
+    <a v-else>
       <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga in cos
     </a>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     price: Number,
     title: String
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated"])
   }
 };
 </script>
