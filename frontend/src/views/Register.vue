@@ -1,89 +1,49 @@
 <template>
-  <div class="login">
-    <h2>Register</h2>
-    <form>
-      <b-field label="Username" type>
-        <b-input v-model="username" />
-      </b-field>
-      <b-field label="Email">
-        <b-input type="email" v-model="email" />
-      </b-field>
-      <b-field label="Password">
-        <b-input type="password" v-model="password" password-reveal />
-      </b-field>
-      <b-field label="Confirm password" :type="confirmPasswordValid" :message="passwordMessage">
-        <b-input type="password" v-model="confirmPassword" />
-      </b-field>
-      <b-button @click="register">Register</b-button>
-    </form>
+  <div class="register">
+    <b-tabs type="is-boxed" :expanded="true">
+      <b-tab-item>
+        <template slot="header">
+          <b-icon icon="cart-plus"></b-icon>
+          <span>Cumparator</span>
+        </template>
+        <register-form
+          buyerTypeLabel="Ce tip de cumparator esti ?"
+          fullNameLabel="Nume si prenume"
+          user_type="buyer"
+        />
+      </b-tab-item>
+      <b-tab-item>
+        <template slot="header">
+          <b-icon icon="account"></b-icon>
+          <span>Vanzator</span>
+        </template>
+        <register-form
+          buyerTypeLabel="Ce tip de cumparatori vrei sa ai ?"
+          fullNameLabel="Denumire companie"
+          user_type="seller"
+        />
+      </b-tab-item>
+    </b-tabs>
   </div>
 </template>
 
 <script>
+import RegisterForm from "../components/RegisterForm.vue";
+
 export default {
-  data() {
-    return {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: ""
-    };
-  },
-  computed: {
-    confirmPasswordValid() {
-      if (this.password === "") {
-        return "";
-      }
-      if (this.password === this.confirmPassword) {
-        return "is-success";
-      }
-      return "is-danger";
-    },
-    passwordMessage() {
-      if (this.confirmPasswordValid == "is-danger") {
-        return "Passwords does not match";
-      }
-      return "";
-    }
-  },
-  methods: {
-    register() {
-      if (this.password !== this.confirmPassword) return;
-      let username = this.username;
-      let email = this.email;
-      let password = this.password;
-      this.$store
-        .dispatch("register", {
-          username,
-          email,
-          password
-        })
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch(() => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `Username or email already exist.`,
-            position: "is-bottom",
-            type: "is-danger",
-            hasIcon: true
-          });
-        });
-    }
-  }
+  components: { RegisterForm }
 };
 </script>
 
 <style scoped>
-.login {
+.register {
   display: grid;
-  grid-template-rows: repeat(2, min-content);
-  grid-gap: 3rem;
+  justify-content: center;
   justify-items: center;
+  align-items: center;
   align-content: center;
 
-  height: 100vh;
+  height: 85vh;
 }
 
 h2 {
@@ -92,18 +52,7 @@ h2 {
 
 form {
   display: grid;
-  grid-template-columns: 25rem;
-  grid-gap: 1rem;
-}
-
-input {
-  width: 25rem;
-  height: 2.3rem;
-  background: #fcfcfc;
-  display: block;
-  padding: 0.5rem;
-  border: 1px solid #e7e7e7;
-  border-radius: 0.3rem;
-  font-size: 1rem;
+  justify-items: center;
+  grid-row-gap: 1rem;
 }
 </style>

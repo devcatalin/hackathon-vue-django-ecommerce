@@ -1,14 +1,13 @@
 <template>
-  <div class="login">
-    <h2>Login</h2>
-    <form>
-      <b-field label="Username">
-        <b-input v-model="username" />
+  <div class="login card">
+    <form v-on:submit.prevent="login" class="card p-lg">
+      <b-field label="Nume de utilizator">
+        <b-input v-model="username" required />
       </b-field>
-      <b-field label="Password">
-        <b-input v-model="password" type="password" password-reveal />
+      <b-field label="Parola">
+        <b-input v-model="password" type="password" password-reveal required />
       </b-field>
-      <b-button @click.prevent="login">Login</b-button>
+      <button type="submit" class="button is-primary">Autentificare</button>
     </form>
   </div>
 </template>
@@ -27,7 +26,11 @@ export default {
       let password = this.password;
       this.$store
         .dispatch("login", { username, password })
-        .then(() => this.$router.push("/"))
+        .then(() => {
+          this.$router.push("/");
+          this.$store.dispatch("fetchUserData");
+          this.$buefy.toast.open(`Bun venit, ${username} !`);
+        })
         .catch(() => {
           this.$buefy.notification.open({
             duration: 5000,
@@ -50,33 +53,16 @@ export default {
   justify-items: center;
   align-content: center;
 
-  height: 100vh;
+  height: 91vh;
 }
 
 h2 {
-  font-size: 3.4rem;
+  font-size: 3rem;
 }
 
 form {
   display: grid;
   grid-template-columns: 25rem;
-  grid-gap: 1.5rem;
-}
-
-.form-forgot {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #64b5f6;
-}
-
-input {
-  width: 25rem;
-  height: 2.3rem;
-  background: #fcfcfc;
-  display: block;
-  padding: 0.5rem;
-  border: 1px solid #e7e7e7;
-  border-radius: 0.3rem;
-  font-size: 1rem;
+  grid-gap: 1rem;
 }
 </style>

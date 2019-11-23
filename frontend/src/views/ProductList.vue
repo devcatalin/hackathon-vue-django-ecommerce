@@ -3,7 +3,7 @@
     <span></span>
     <div class="sorting-panel m-b-sm">
       <span class="m-r-sm">Ordoneaza dupa:</span>
-      <b-dropdown v-model="sortOption" aria-role="list" class="m-r-lg z-index">
+      <b-dropdown v-model="sortOption" aria-role="list" class="m-r-lg">
         <button class="button is-primary" type="button" slot="trigger">
           <template v-if="sortOption === 'Pret crescator'">
             <span>Pret crescator</span>
@@ -22,7 +22,7 @@
         <b-dropdown-item value="Locatie" aria-role="listitem">Locatie</b-dropdown-item>
       </b-dropdown>
       <span class="m-r-sm">Tip afisare:</span>
-      <b-dropdown aria-role="list" v-model="viewOption" class="z-index">
+      <b-dropdown aria-role="list" v-model="viewOption">
         <button class="button is-primary" type="button" slot="trigger">
           <template v-if="viewOption === 'Grid'">
             <span>Grid</span>
@@ -43,10 +43,17 @@
     </div>
 
     <sidebar />
-    <div>
-      <product-grid v-if="viewOption === 'Grid'" title="Rosii" price="215,28" />
-      <product-list v-else-if="viewOption === 'List'" />
-      <map-view v-else />
+    <div v-if="viewOption == 'Grid'">
+      <product-grid
+        v-for="product in products"
+        :key="product.slug"
+        :title="product.title"
+        :price="product.price"
+        :thumbnail="product.thumbnail"
+      />
+    </div>
+    <div v-else>
+      <product-list />
     </div>
   </div>
 </template>
@@ -55,14 +62,22 @@
 import Sidebar from "../components/Sidebar.vue";
 import ProductGrid from "../components/ProductGrid.vue";
 import ProductList from "../components/ProductList.vue";
-import MapView from "../components/MapView.vue";
+
+import { mapGetters } from "vuex";
+
 export default {
-  components: { Sidebar, ProductGrid, ProductList, MapView },
+  components: { Sidebar, ProductGrid, ProductList },
   data() {
     return {
       sortOption: "Pret crescator",
       viewOption: "Grid"
     };
+  },
+  computed: {
+    ...mapGetters(["products"])
+  },
+  beforeMount() {
+    this.$store.dispatch("fetchProducts");
   }
 };
 </script>
@@ -87,9 +102,5 @@ export default {
 
 i {
   cursor: pointer;
-}
-
-.z-index {
-  z-index: 10;
 }
 </style>
