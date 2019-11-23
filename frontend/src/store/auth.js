@@ -81,24 +81,14 @@ export const authModule = {
     logout({ commit }) {
       localStorage.removeItem("token");
       commit("logout");
+    },
+    async updateProfile({ commit }, payload) {
+      commit("loading", true);
+      const response = await http.post('/api/users/update/', {
+        ...payload
+      })
+      commit('setUserData', response.data);
+      commit("loading", false);
     }
   }
 };
-
-// return new Promise((resolve, reject) => {
-//     commit('loading', true);
-//     axios.post("", {
-
-//     }).then(response => {
-//       commit("loading", false);
-//       const { questions } = response.data;
-//       commit("setQuestions", questions);
-//       // ce faci cu raspunsu?
-//       resolve();
-//     }).catch(error => {
-//       commit("loading", false);
-//       // ce faci cu eroarea?
-//       reject();
-//     })
-//   }
-// )
