@@ -3,7 +3,11 @@
         <span></span>
         <div class="sorting-panel m-b-sm">
             <span class="m-r-sm">Ordoneaza dupa:</span>
-            <b-dropdown v-model="sortOption" aria-role="list" class="m-r-lg">
+            <b-dropdown
+                v-model="sortOption"
+                aria-role="list"
+                class="m-r-lg z-index"
+            >
                 <button class="button is-primary" type="button" slot="trigger">
                     <template v-if="sortOption === 'Pret crescator'">
                         <span>Pret crescator</span>
@@ -28,7 +32,7 @@
                 >
             </b-dropdown>
             <span class="m-r-sm">Tip afisare:</span>
-            <b-dropdown aria-role="list" v-model="viewOption">
+            <b-dropdown aria-role="list" v-model="viewOption" class="z-index">
                 <button class="button is-primary" type="button" slot="trigger">
                     <template v-if="viewOption === 'Grid'">
                         <span>Grid</span>
@@ -57,11 +61,12 @@
         <sidebar />
         <div>
             <product-grid
-                v-if="viewOption == 'Grid'"
+                v-if="viewOption === 'Grid'"
                 title="Rosii"
                 price="215,28"
             />
-            <product-list v-else />
+            <product-list v-else-if="viewOption === 'List'" />
+            <map-view v-else />
         </div>
     </div>
 </template>
@@ -70,8 +75,9 @@
 import Sidebar from "../components/Sidebar.vue";
 import ProductGrid from "../components/ProductGrid.vue";
 import ProductList from "../components/ProductList.vue";
+import MapView from "../components/MapView.vue";
 export default {
-    components: { Sidebar, ProductGrid, ProductList },
+    components: { Sidebar, ProductGrid, ProductList, MapView },
     data() {
         return {
             sortOption: "Pret crescator",
@@ -101,5 +107,9 @@ export default {
 
 i {
     cursor: pointer;
+}
+
+.z-index {
+    z-index: 100000;
 }
 </style>
