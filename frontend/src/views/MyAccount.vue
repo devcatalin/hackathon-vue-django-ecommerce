@@ -1,35 +1,6 @@
 <template>
   <div class="my-account m-t-xl p-lg">
-    <div class="card m-b-lg p-lg">
-      <h1 class="m-b-md">Detalii cont</h1>
-      <h2 class="m-b-sm">
-        Nume de utilizator:
-        <span>{{ user.username}}</span>
-      </h2>
-      <h2 class="m-b-sm">
-        Nume complet:
-        <span>{{ user.profile.full_name }}</span>
-      </h2>
-      <h2 class="m-b-sm">
-        Email:
-        <span>{{ user.profile.full_name }}</span>
-      </h2>
-      <h2 class="m-b-sm">
-        Număr de telefon:
-        <span>{{ user.profile.phone_number }}</span>
-      </h2>
-      <h2 class="m-b-sm">
-        Adresă:
-        <span>{{ user.profile.address }}</span>
-      </h2>
-      <h2 class="m-b-sm">
-        Tip cumpărător:
-        <span>{{ user.profile.buyer_type }}</span>
-      </h2>
-      <div class="flex-center">
-        <b-button @click="updateInfo = true" type="is-primary">Editeaza informatiile</b-button>
-      </div>
-    </div>
+    <user-profile />
     <div class="card orders-card p-lg">
       <h1 class="m-b-lg">Comenzile mele</h1>
       <b-table
@@ -73,32 +44,24 @@
         </template>
       </b-table>
     </div>
-    <b-modal :active.sync="updateInfo" has-modal-card :can-cancel="true">
-      <update-details />
-    </b-modal>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import UpdateDetails from "../components/UpdateDetails.vue";
+import UserProfile from "../components/Profile.vue";
 
 export default {
   components: {
-    UpdateDetails
+    UserProfile
   },
   methodes: {
     toggle(row) {
       this.$refs.table.toggleDetails(row);
     }
   },
-  computed: {
-    ...mapGetters(["user"])
-  },
   data() {
     return {
       deleteOrder: false,
-      updateInfo: false,
       defaultOpenedDetails: [],
       showDetailIcon: true,
       data: [
@@ -146,12 +109,6 @@ export default {
           cantity: 102,
           price: "255 Lei"
         }
-      ],
-      userData: [
-        { title: "Nume", value: "Razvan" },
-        { title: "Numar de telefon", value: "0720 123 456" },
-        { title: "Email", value: "razvan@gmail.com" },
-        { title: "Adresa", value: "Strada exemplu" }
       ]
     };
   }

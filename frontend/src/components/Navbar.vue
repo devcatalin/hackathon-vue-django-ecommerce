@@ -44,7 +44,7 @@
     </template>
     <template slot="end" v-if="isAuthenticated && isSeller">
       <router-link to="/seller-products" exact v-slot="{ isActive, navigate }">
-        <b-navbar-item @click="navigate">Lista produse</b-navbar-item>
+        <b-navbar-item @click="navigate">Contul meu</b-navbar-item>
       </router-link>
       <b-navbar-item @click="logout">Deconectare</b-navbar-item>
     </template>

@@ -37,22 +37,14 @@ export const productsModule = {
     apply_filters(state) {
       let filteredProducts = state.products;
       if (state.filters.category && state.filters.category !== "") {
-        console.log("intra aici?");
-        console.log(state.filters.category);
-        console.log("cat-before", filteredProducts);
         filteredProducts = filteredProducts.filter(item => {
           return item.category.slug === state.filters.category;
         });
-        console.log("cat-after", filteredProducts);
       }
       if (state.filters.subcategory && state.filters.subcategory !== "") {
-        console.log("intra aici2?");
-        console.log(state.filters.subcategory);
-        console.log("sub-before", filteredProducts);
         filteredProducts = filteredProducts.filter(item => {
           return item.subcategory.slug === state.filters.subcategory;
         });
-        console.log("sub-aftre", filteredProducts);
       }
       if (state.filters.sellers && state.filters.sellers.length > 0) {
         filteredProducts = filteredProducts.filter(item => {

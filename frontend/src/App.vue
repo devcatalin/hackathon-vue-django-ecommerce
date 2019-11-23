@@ -11,17 +11,15 @@ import Navbar from "./components/Navbar.vue";
 import { mapGetters } from "vuex";
 
 export default {
-    components: { Navbar },
-    computed: {
-        ...mapGetters(["isLoading", "isAuthenticated", "user"])
-    },
-    beforeMount() {
-        this.$store.dispatch("fetchCategories");
-        this.$store.dispatch("fetchSellers");
-        this.$store.dispatch("getCart");
-        if (this.isAuthenticated) {
-            this.$store.dispatch("fetchUserData");
-        }
+  components: { Navbar },
+  computed: {
+    ...mapGetters(["isLoading", "isAuthenticated", "user"])
+  },
+  beforeMount() {
+    this.$store.dispatch("fetchCategories");
+    this.$store.dispatch("getCart");
+    if (this.isAuthenticated) {
+      this.$store.dispatch("fetchUserData");
     }
 };
 </script>
@@ -55,8 +53,9 @@ body {
 }
 
 html {
-    box-sizing: border-box;
-    font-size: 62.5%; /* 1rem = 10px */
+  background-color: #eeeeee !important;
+  box-sizing: border-box;
+  font-size: 62.5%; /* 1rem = 10px */
 }
 
 a {

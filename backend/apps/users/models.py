@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     full_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=11)
+    phone_number = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
