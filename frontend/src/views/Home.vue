@@ -25,7 +25,7 @@ export default {};
 div {
     position: relative;
     height: 90vh;
-    background-image: url("/romania_farm.jpg");
+    background-image: url("/romania_farm-min.jpg");
     background-size: cover;
     background-position: center;
 
