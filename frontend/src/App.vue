@@ -29,6 +29,7 @@ export default {
 <style lang="scss">
 body {
   background-color: #eeeeee;
+  min-height: 100vh;
 }
 $sizeUnit: rem;
 $marginKey: "m";
