@@ -17,7 +17,8 @@ export const authModule = {
   },
   getters: {
     isAuthenticated: state => !!state.token,
-    isSeller: state => state.user.profile.user_type === "seller"
+    isSeller: state => state.user.profile.user_type === "seller",
+    user: state => state.user
   },
   mutations: {
     auth_success(state, token) {

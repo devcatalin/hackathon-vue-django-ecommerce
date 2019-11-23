@@ -9,14 +9,19 @@ export const productsModule = {
       subcategory: "",
       sellers: [],
       sort: ""
-    }
+    },
+    sellers: []
   },
   getters: {
+    sellers: state => state.sellers,
     products: state => state.products,
     filteredProducts: state => state.filteredProducts,
     filters: state => state.filters
   },
   mutations: {
+    set_sellers(state, sellers) {
+      state.sellers = sellers;
+    },
     set_products(state, products) {
       state.products = products;
     },
@@ -53,7 +58,8 @@ export const productsModule = {
         // sellers: sellers.map(seller => {return {username: seller}})
       });
       commit('loading', false);
-      commit('set_products', response.data);
+      commit('set_products', response.data.products);
+      commit('set_sellers', response.data.sellers);
     },
     async setFilters({commit, dispatch}, filters) {
       const { category, subcategory, sellers, sort } = filters;

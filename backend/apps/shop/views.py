@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 
+from apps.users.serializers import UserProfileSerializer
+from apps.users.models import UserProfile
+
 from .models import Category, Subcategory, Product
 
 from .services import create_product
@@ -57,31 +60,20 @@ class ProductListView(APIView):
         if sort_option and sort_option != "":
             products = products.order_by(sort_option)
 
+        products_serializer = ProductSerializer(products, many=True)
+
         owners = set()
 
         for product in products:
-            owners.add(product.owner)
+            owners.add(product.owner.username)
 
-        # if sort_price:
-        #     if sort_price == "asc":
-        #         products = products.order_by('price')
-        #     if sort_price == "desc":
-        #         products = products.order_by('-price')
+        sellers = UserProfile.objects.filter(user__username__in=owners)
+        sellers_serializer = UserProfileSerializer(sellers, many=True)
 
-        # if sort_title:
-        #     if sort_title == "asc":
-        #         products = products.order_by('title')
-        #     if sort_title == "desc":
-        #         products = products.order_by('-title')
-
-        # if sort_sellers:
-        #     if sort_sellers == "asc":
-        #         products = products.order_by('owner__full_name')
-        #     if sort_sellers == "desc":
-        #         products = products.order_by('-owner__full_name')
-
-        output_serializer = ProductSerializer(products, many=True)
-        return Response(output_serializer.data)
+        return Response({
+            'products': products_serializer.data,
+            'sellers': sellers_serializer.data
+        })
 
 
 class SellerProductListView(APIView):

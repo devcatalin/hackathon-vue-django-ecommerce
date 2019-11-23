@@ -1,21 +1,18 @@
 <template>
   <div class="card product-grid-card">
     <figure class="image is-4by3">
-      <img :src="thumbnail" :alt="title" />
+      <img :src="product.thumbnail" :alt="product.title" />
     </figure>
-    <!-- <img width="700px" max-height="100px" :src="thumbnail" alt="Placeholder image" /> -->
     <div class="card-content">
-      <h2 class="m-b-sm">{{ title }}</h2>
-      <p>{{ price }} Lei</p>
-      <p>Vândut de: {{ seller }}</p>
+      <h2 class="m-b-sm">{{ product.title }}</h2>
+      <p>{{ product.price }} Lei</p>
+      <p>Vândut de: {{ product.seller }}</p>
     </div>
     <router-link to="/login" v-if="!isAuthenticated">
-      <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga
-      in cos
+      <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga in cos
     </router-link>
-    <a v-else>
-      <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga
-      in cos
+    <a @click.prevent="addProductToCart" v-else>
+      <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga in cos
     </a>
   </div>
 </template>
@@ -23,9 +20,14 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["price", "title", "thumbnail", "seller"],
+  props: ["product"],
   computed: {
     ...mapGetters(["isAuthenticated"])
+  },
+  methods: {
+    addProductToCart() {
+      this.$store.dispatch("addCartItem", this.product);
+    }
   }
 };
 </script>

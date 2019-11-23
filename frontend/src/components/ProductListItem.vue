@@ -1,17 +1,22 @@
 <template>
   <div class="card product-list-card m-b-md">
     <!-- <img :src="thumbnail" :alt="title" /> -->
-    <div :style="`background-image: url(${thumbnail})`" class="thumbnail"></div>
+    <div :style="`background-image: url(${product.thumbnail})`" class="thumbnail"></div>
     <div class="product-list-details">
-      <h1>{{title}}</h1>
-      <p>{{description}}</p>
-      <p>Vândut de: {{seller}}</p>
+      <h1>{{product.title}}</h1>
+      <p>{{product.description}}</p>
+      <p>Vândut de: {{product.seller}}</p>
       <div class="product-list-details-bottom">
-        <span>{{price}} Lei</span>
+        <span>{{product.price}} Lei</span>
         <router-link v-if="!isAuthenticated" to="/login" exact v-slot="{ navigate }">
           <b-button icon-left="cart" type="is-primary" @click="navigate">Adaugă în cos</b-button>
         </router-link>
-        <b-button v-else icon-left="cart" type="is-primary">Adaugă în cos</b-button>
+        <b-button
+          @click.prevent="addProductToCart"
+          v-else
+          icon-left="cart"
+          type="is-primary"
+        >Adaugă în cos</b-button>
       </div>
     </div>
   </div>
@@ -20,9 +25,14 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["title", "description", "price", "seller", "thumbnail"],
+  props: ["product"],
   computed: {
     ...mapGetters(["isAuthenticated"])
+  },
+  methods: {
+    addProductToCart() {
+      this.$store.dispatch("addCartItem", this.product);
+    }
   }
 };
 </script>

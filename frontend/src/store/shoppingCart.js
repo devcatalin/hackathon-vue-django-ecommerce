@@ -5,11 +5,13 @@ const saveToLocalStorage = (key, value) => {
 export const shoppingCartModule = {
   state: {
     cart: {
-      items: []
+      items: [],
+      total: 0
     }
   },
   getters: {
-    cartItems: state => state.cart.items
+    cartItems: state => state.cart.items,
+    cartTotal: state => state.cart.total
   },
   mutations: {
     getCart(state) {
@@ -19,11 +21,22 @@ export const shoppingCartModule = {
       }
     },
     addCartItem(state, item) {
+      if (state.cart.items.includes(item))
+        return;
+      item.quantity = 1;
       state.cart.items = [...state.cart.items, item];
+      state.cart.total = state.cart.total + item.price;
       saveToLocalStorage("cart", state.cart);
     },
-    removeCartItem(state, item_slug) {
-      state.cart.items = state.cart.items.filter(item => item.slug !== item_slug)
+    removeCartItem(state, product) {
+      const first_length = state.cart.items.length;
+      state.cart.items = state.cart.items.filter(i => {
+        return i.slug !== product.slug;
+      });
+      const second_length = state.cart.items.length;
+      if (first_length !== second_length) {
+        state.cart.total = state.cart.total - product.price;
+      }
       saveToLocalStorage("cart", state.cart);
     }
   },
@@ -34,8 +47,9 @@ export const shoppingCartModule = {
     addCartItem({ commit }, item) {
       commit('addCartItem', item);
     },
-    removeCartItem({ commit }, item_slug) {
-      commit('removeCartItem', item_slug)
+    removeCartItem({ commit }, item) {
+      console.log("ajunge aici", item);
+      commit('removeCartItem', item);
     }
   }
 }

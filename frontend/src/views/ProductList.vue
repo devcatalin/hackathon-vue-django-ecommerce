@@ -40,25 +40,10 @@
 
     <sidebar />
     <div class="grid-view" v-if="viewOption === 'Grid'">
-      <product-grid
-        v-for="product in products"
-        :key="product.slug"
-        :title="product.title"
-        :price="product.price"
-        :thumbnail="product.thumbnail"
-        :seller="product.seller"
-      />
+      <product-grid v-for="product in products" :key="product.slug" :product="product" />
     </div>
     <div v-else-if="viewOption === 'List'">
-      <product-list
-        v-for="product in products"
-        :key="product.slug"
-        :title="product.title"
-        :price="product.price"
-        :thumbnail="product.thumbnail"
-        :seller="product.seller"
-        :description="product.description"
-      />
+      <product-list v-for="product in products" :key="product.slug" :product="product" />
     </div>
     <map-view v-else />
   </div>
