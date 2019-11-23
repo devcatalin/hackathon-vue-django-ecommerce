@@ -1,6 +1,6 @@
 <template>
-    <div class="shopping-cart m-xl">
-        <div class="m-b-xl">
+    <div class="shopping-cart m-l-lg m-r-lg m-t-lg">
+        <div class="m-b-lg">
             <b-table :bordered="true" :data="data">
                 <template slot-scope="props">
                     <b-table-column field="name" label="Nume produs">{{
@@ -42,9 +42,36 @@
                 </template>
             </b-table>
         </div>
-        <h2 class="level-right">Total de plata: 5.823 Lei</h2>
+        <h4 class="level-right">Total cos: 5,800.00 Lei</h4>
+        <h4 class="level-right m-b-sm">Cost livrare: {{ deliveryCost }} Lei</h4>
+        <h2 class="level-right">Total de plata: 5,810.70 Lei</h2>
 
-        <div class="payment-panel card p-lg m-t-lg">
+        <div class="card m-t-lg p-lg payment-panel">
+            <h1>Doresc sa mi se livreze comanda la:</h1>
+            <div class="field">
+                <b-radio
+                    native-value="oldAddress"
+                    v-model="address"
+                    name="address"
+                    size="is-medium"
+                    >Adresa</b-radio
+                >
+            </div>
+            <div class="field">
+                <b-radio
+                    name="address"
+                    native-value="newAddress"
+                    v-model="address"
+                    size="is-medium"
+                    >Adauga adresa noua</b-radio
+                >
+            </div>
+            <div v-if="address == 'newAddress'" class="full-columns m-b-md">
+                <label class="label">Adresa</label>
+                <address-search />
+            </div>
+        </div>
+        <div class="payment-panel card p-lg m-t-lg m-b-md">
             <h1>Plata cu cardul</h1>
             <card
                 class="stripe-card m-b-md"
@@ -75,14 +102,20 @@
 
 <script>
 import { Card } from "vue-stripe-elements-plus";
+import AddressSearch from "../components/AddressSearch.vue";
 export default {
     components: {
-        Card
+        Card,
+        AddressSearch
     },
     data() {
         return {
             complete: false,
             deleteProduct: false,
+            address: "oldAddress",
+            deliveryCost: (
+                0.05 * this.distance(45.7538, 21.2257, 46.7693, 23.5901, "K")
+            ).toFixed(2),
             data: [
                 {
                     name: "Rosii roz",
@@ -130,12 +163,41 @@ export default {
     methods: {
         setComplete(event) {
             this.complete = event.complete;
+        },
+        distance(lat1, lon1, lat2, lon2, unit) {
+            if (lat1 == lat2 && lon1 == lon2) {
+                return 0;
+            } else {
+                var radlat1 = (Math.PI * lat1) / 180;
+                var radlat2 = (Math.PI * lat2) / 180;
+                var theta = lon1 - lon2;
+                var radtheta = (Math.PI * theta) / 180;
+                var dist =
+                    Math.sin(radlat1) * Math.sin(radlat2) +
+                    Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                if (dist > 1) {
+                    dist = 1;
+                }
+                dist = Math.acos(dist);
+                dist = (dist * 180) / Math.PI;
+                dist = dist * 60 * 1.1515;
+                if (unit == "K") {
+                    dist = dist * 1.609344;
+                }
+                if (unit == "N") {
+                    dist = dist * 0.8684;
+                }
+                return dist;
+            }
         }
     }
 };
 </script>
 
 <style lang="scss" scoped>
+.shopping-cart {
+    min-height: 100vh;
+}
 h2 {
     font-size: 1.3rem;
     font-weight: 700;

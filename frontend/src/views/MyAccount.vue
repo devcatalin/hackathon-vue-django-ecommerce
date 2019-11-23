@@ -2,9 +2,9 @@
     <div class="my-account m-t-xl p-lg">
         <div class="card m-b-lg p-lg">
             <h1 class="m-b-md">Detalii cont</h1>
-            <div v-for="(value, key) in userData" :key="value">
+            <div v-for="data in userData" :key="data.title">
                 <h2 class="m-b-sm">
-                    {{ key }}: <span>{{ value }}</span>
+                    {{ data.title }}: <span>{{ data.value }}</span>
                 </h2>
             </div>
             <div class="flex-center">
@@ -160,12 +160,12 @@ export default {
                     price: "255 Lei"
                 }
             ],
-            userData: {
-                Name: "Razvan",
-                Phone_number: "0720 123 456",
-                Email: "razvan@gmail.com",
-                Address: "Strada exemplu"
-            }
+            userData: [
+                { title: "Nume", value: "Razvan" },
+                { title: "Numar de telefon", value: "0720 123 456" },
+                { title: "Email", value: "razvan@gmail.com" },
+                { title: "Adresa", value: "Strada exemplu" }
+            ]
         };
     }
 };
