@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ProductGrid from "../components/ProductGrid.vue";
+import ProductGrid from "../components/ProductGridItem.vue";
 export default {
   components: {
     ProductGrid

@@ -7,6 +7,7 @@
     <div class="card-content">
       <h2 class="m-b-sm">{{ title }}</h2>
       <p>{{ price }} Lei</p>
+      <p>Vândut de: {{ seller }}</p>
     </div>
     <router-link to="/login" v-if="!isAuthenticated">
       <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adauga
@@ -22,11 +23,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: {
-    price: Number,
-    title: String,
-    thumbnail: String
-  },
+  props: ["price", "title", "thumbnail", "seller"],
   computed: {
     ...mapGetters(["isAuthenticated"])
   }

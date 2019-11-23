@@ -11,6 +11,8 @@ from .selectors import get_categories, get_products_from_subcategory
 
 from .serializers import CategorySerializer, ProductSerializer
 
+from .utils import inline_serializer
+
 
 class CategoryListView(APIView):
     permission_classes = []
@@ -26,25 +28,60 @@ class ProductListView(APIView):
     permission_classes = []
     authentication_classes = []
 
-    def get(self, request, *args, **kwargs):
-        subcategory = request.query_params.get('subcategory', None)
-        seller_username = request.query_params.get('seller', None)
-        seller = None
-        if seller_username:
-            try:
-                seller = User.objects.get(username=seller_username)
-            except User.DoesNotExist:
-                seller = None
+    class InputSerializer(serializers.Serializer):
+        category = serializers.CharField(required=False, allow_blank=True)
+        subcategory = serializers.CharField(required=False, allow_blank=True)
+        sellers = serializers.ListField(child=serializers.CharField(), required=False)
+        sort_option = serializers.CharField(required=False, allow_blank=True)
 
+    def post(self, request, *args, **kwargs):
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        category = input_serializer.validated_data["category"] or None
+        subcategory = input_serializer.validated_data["subcategory"] or None
+        sellers = input_serializer.validated_data["sellers"] or None
+        sort_option = input_serializer.validated_data["sort_option"] or None
         products = Product.objects.all()
 
-        if subcategory:
-            products = products.objects.filter(subcategory__slug=subcategory)
-        if seller:
-            products = products.filter(owner=seller)
+        if category and category != "":
+            products = products.filter(subcategory__category__slug=category)
 
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+        if subcategory and subcategory != "":
+            products = products.filter(subcategory__slug=subcategory)
+
+        print(sellers)
+        if sellers and len(sellers) > 0:
+            products = products.filter(owner__username__in=sellers)
+
+        if sort_option and sort_option != "":
+            products = products.order_by(sort_option)
+
+        owners = set()
+
+        for product in products:
+            owners.add(product.owner)
+
+        # if sort_price:
+        #     if sort_price == "asc":
+        #         products = products.order_by('price')
+        #     if sort_price == "desc":
+        #         products = products.order_by('-price')
+
+        # if sort_title:
+        #     if sort_title == "asc":
+        #         products = products.order_by('title')
+        #     if sort_title == "desc":
+        #         products = products.order_by('-title')
+
+        # if sort_sellers:
+        #     if sort_sellers == "asc":
+        #         products = products.order_by('owner__full_name')
+        #     if sort_sellers == "desc":
+        #         products = products.order_by('-owner__full_name')
+
+        output_serializer = ProductSerializer(products, many=True)
+        return Response(output_serializer.data)
 
 
 class SellerProductListView(APIView):
