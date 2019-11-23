@@ -40,9 +40,12 @@ class UserRegisterView(APIView):
 
 class UserProfileUpdateView(APIView):
     class InputSerializer(serializers.Serializer):
-        full_name = serializers.CharField()
-        phone_number = serializers.CharField()
-        address = serializers.CharField()
+        full_name = serializers.CharField(required=False)
+        phone_number = serializers.CharField(required=False)
+        email = serializers.EmailField(required=False)
+        address = serializers.CharField(required=False)
+        longitude = serializers.DecimalField(max_digits=9, decimal_places=6, required=False)
+        latitude = serializers.DecimalField(max_digits=9, decimal_places=6, required=False)
 
     def post(self, request, *args, **kwargs):
         serializer = self.InputSerializer(data=request.data)

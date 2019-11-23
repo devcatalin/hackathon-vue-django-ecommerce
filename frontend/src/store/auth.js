@@ -84,7 +84,15 @@ export const authModule = {
     },
     async updateProfile({ commit }, payload) {
       commit("loading", true);
-      const response = await http.post('/api/users/update/', {
+      // const {
+      //   full_name,
+      //   phone_number,
+      //   email,
+      //   address,
+      //   longitude,
+      //   latitude
+      // } = payload;
+      const response = await http.post('/api/users/profile/update/', {
         ...payload
       })
       commit('setUserData', response.data);
