@@ -7,6 +7,11 @@
                     {{ key }}: <span>{{ value }}</span>
                 </h2>
             </div>
+            <div class="flex-center">
+                <b-button @click="updateInfo = true" type="is-primary"
+                    >Editeaza informatiile</b-button
+                >
+            </div>
         </div>
         <div class="card orders-card p-lg">
             <h1 class="m-b-lg">Comenzile mele</h1>
@@ -85,11 +90,19 @@
                 </template>
             </b-table>
         </div>
+        <b-modal :active.sync="updateInfo" has-modal-card :can-cancel="true">
+            <update-details />
+        </b-modal>
     </div>
 </template>
 
 <script>
+import UpdateDetails from "../components/UpdateDetails.vue";
+
 export default {
+    components: {
+        UpdateDetails
+    },
     methodes: {
         toggle(row) {
             this.$refs.table.toggleDetails(row);
@@ -98,6 +111,7 @@ export default {
     data() {
         return {
             deleteOrder: false,
+            updateInfo: false,
             defaultOpenedDetails: [],
             showDetailIcon: true,
             data: [
@@ -169,6 +183,10 @@ h1 {
 .flex-align {
     display: flex;
     justify-content: space-between;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
 }
 h3 {
     font-size: 1.5rem;

@@ -3,7 +3,7 @@
         <div class="flex-center">
             <b-button
                 type="is-primary"
-                class="m-b-lg flex-center"
+                class="m-b-lg"
                 @click="updateProduct = true"
                 >Adauga produs nou</b-button
             >
