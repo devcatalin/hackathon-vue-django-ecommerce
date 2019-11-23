@@ -26,7 +26,11 @@ export default {
       let password = this.password;
       this.$store
         .dispatch("login", { username, password })
-        .then(() => this.$router.push("/"))
+        .then(() => {
+          this.$router.push("/");
+          this.$store.dispatch("fetchUserData");
+          this.$buefy.toast.open(`Bun venit, ${username} !`);
+        })
         .catch(() => {
           this.$buefy.notification.open({
             duration: 5000,

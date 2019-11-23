@@ -31,59 +31,7 @@
 import RegisterForm from "../components/RegisterForm.vue";
 
 export default {
-  components: { RegisterForm },
-  data() {
-    return {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      address: undefined
-    };
-  },
-  computed: {
-    confirmPasswordValid() {
-      if (this.password === "") {
-        return "";
-      }
-      if (this.password === this.confirmPassword) {
-        return "is-success";
-      }
-      return "is-danger";
-    },
-    passwordMessage() {
-      if (this.confirmPasswordValid == "is-danger") {
-        return "Passwords does not match";
-      }
-      return "";
-    }
-  },
-  methods: {
-    register() {
-      if (this.password !== this.confirmPassword) return;
-      let username = this.username;
-      let email = this.email;
-      let password = this.password;
-      this.$store
-        .dispatch("register", {
-          username,
-          email,
-          password
-        })
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch(() => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `Username or email already exist.`,
-            position: "is-bottom",
-            type: "is-danger",
-            hasIcon: true
-          });
-        });
-    }
-  }
+  components: { RegisterForm }
 };
 </script>
 

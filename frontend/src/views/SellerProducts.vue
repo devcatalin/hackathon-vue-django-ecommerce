@@ -10,7 +10,7 @@
         </div>
 
         <div>
-            <b-table bordered="true" :data="data">
+            <b-table :bordered="true" :data="data">
                 <template slot-scope="props">
                     <b-table-column
                         width="200"

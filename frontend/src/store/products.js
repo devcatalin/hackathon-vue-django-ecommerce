@@ -5,7 +5,7 @@ export const productsModule = {
     products: []
   },
   getters: {
-
+    products: state => state.products
   },
   mutations: {
     set_products(state, products) {
@@ -13,7 +13,7 @@ export const productsModule = {
     }
   },
   actions: {
-    async getProducts({commit}, subcategory=null) {
+    async fetchProducts({commit}, subcategory=null) {
       commit('loading', true);
       const response = await http.get(`/api/shop/products/`, {
         params: {

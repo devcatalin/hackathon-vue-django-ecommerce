@@ -1,7 +1,7 @@
 <template>
   <div class="shopping-cart m-xl">
     <div class="m-b-xl">
-      <b-table bordered="true" :data="data">
+      <b-table :bordered="true" :data="data">
         <template slot-scope="props">
           <b-table-column field="name" label="Nume produs">{{props.row.name}}</b-table-column>
           <b-table-column field="category" label="Categorie">{{props.row.category}}</b-table-column>
