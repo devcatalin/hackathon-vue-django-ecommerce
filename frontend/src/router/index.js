@@ -12,6 +12,7 @@ import ProductCreate from '../views/ProductCreate.vue';
 import ShoppingCart from '../views/ShoppingCart.vue'
 
 import SellerProducts from '../views/SellerProducts.vue'
+import MyAccount from '../views/MyAccount.vue'
 
 
 Vue.use(VueRouter)
@@ -55,7 +56,12 @@ const routes = [{
     path: '/seller-products',
     name: 'seller_products',
     component: SellerProducts
-  }
+  },
+  {
+    path: '/my-account',
+    name: 'my_account',
+    component: MyAccount
+  },
 ]
 
 const router = new VueRouter({
