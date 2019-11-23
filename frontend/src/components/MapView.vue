@@ -31,9 +31,14 @@ export default {
 .map-view {
   height: 80%;
   width: 95%;
+  z-index: 10 !important;
 }
 h2 {
   font-size: 1rem;
   font-weight: 500;
+}
+
+.vue2leaflet-map {
+  z-index: 1;
 }
 </style>
