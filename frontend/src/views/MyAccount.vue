@@ -19,12 +19,13 @@
         <span>{{ user.profile.phone_number }}</span>
       </h2>
       <h2 class="m-b-sm">
-        Nume:
-        <span>{{ user.profile.full_name }}</span>
+        Adresă:
+        <span>{{ user.profile.address }}</span>
       </h2>
-      <!-- <div v-for="data in userData" :key="data.title">
-
-      </div>-->
+      <h2 class="m-b-sm">
+        Tip cumpărător:
+        <span>{{ user.profile.buyer_type }}</span>
+      </h2>
       <div class="flex-center">
         <b-button @click="updateInfo = true" type="is-primary">Editeaza informatiile</b-button>
       </div>

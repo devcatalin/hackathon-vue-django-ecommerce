@@ -13,12 +13,13 @@ import ShoppingCart from '../views/ShoppingCart.vue'
 
 import SellerProducts from '../views/SellerProducts.vue'
 import MyAccount from '../views/MyAccount.vue'
+import AdminControl from '../views/AdminControl.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home
   },
@@ -61,6 +62,16 @@ const routes = [{
     path: '/my-account',
     name: 'my_account',
     component: MyAccount
+  },
+  {
+    path: '/admin-control',
+    name: 'admin_control',
+    component: AdminControl
+  },
+  {
+    path: '*',
+    redirect: '/',
+    name: 'home'
   },
 ]
 
