@@ -6,9 +6,10 @@ from .models import UserProfile
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
     class Meta:
         model = UserProfile
-        fields = ['user_type', 'full_name', 'phone_number', 'address', 'buyer_type']
+        fields = ['username', 'user_type', 'full_name', 'phone_number', 'address', 'buyer_type']
 
 
 class UserSerializer(serializers.ModelSerializer):

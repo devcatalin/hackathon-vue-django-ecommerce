@@ -9,6 +9,12 @@ class SubcategorySerializer(serializers.ModelSerializer):
         fields = ['title', 'slug']
 
 
+class CategorySimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['title', 'slug']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = SubcategorySerializer(many=True)
     class Meta:
@@ -17,6 +23,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = CategorySimpleSerializer(source="subcategory.category")
+    subcategory = SubcategorySerializer()
+    seller = serializers.CharField(source="owner.username")
     class Meta:
         model = Product
-        fields = ['slug', 'title', 'price', 'description', 'thumbnail']
+        fields = ['seller', 'slug', 'title', 'price', 'description', 'thumbnail', 'category', 'subcategory']
