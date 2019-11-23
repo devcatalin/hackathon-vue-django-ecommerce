@@ -35,6 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'description',
             'quantity_type',
+            'quantity',
             'thumbnail',
             'category',
             'subcategory'
