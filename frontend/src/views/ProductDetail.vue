@@ -44,7 +44,6 @@ export default {
       .then(response => {
         this.product = response.data.product;
         this.similar_products = response.data.similar_products;
-        console.log(response.data);
       })
       .catch(() => {
         this.$router.push("/products");
