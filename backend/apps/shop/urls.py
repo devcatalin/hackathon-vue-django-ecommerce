@@ -9,7 +9,11 @@ from .views import (
     ProductDeleteView,
     SellerProductListView,
     InvoiceCreateView,
-    InvoiceListView
+    InvoiceListView,
+    CategoryCreateView,
+    CategoryDeleteView,
+    SubcategoryCreateView,
+    SubategoryDeleteView
 )
 
 urlpatterns = [
@@ -21,5 +25,9 @@ urlpatterns = [
     path('products/update/', ProductUpdateView.as_view()),
     path('products/delete/', ProductDeleteView.as_view()),
     path('invoices/create/', InvoiceCreateView.as_view()),
-    path('invoices/list/', InvoiceListView.as_view())
+    path('invoices/list/', InvoiceListView.as_view()),
+    path('categories/create/', CategoryCreateView.as_view()),
+    path('categories/delete/', CategoryDeleteView.as_view()),
+    path('subcategories/create/', SubcategoryCreateView.as_view()),
+    path('subcategories/delete/', SubategoryDeleteView.as_view())
 ]
