@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -176,15 +178,30 @@ class ProductDeleteView(APIView):
 class InvoiceCreateView(APIView):
     class InputSerializer(serializers.Serializer):
         summary = serializers.CharField()
-        total_cost = serializers.CharField()
+        total_cost = serializers.DecimalField(max_digits=6, decimal_places=2)
         card_token = serializers.CharField()
         shipping_address = serializers.CharField()
+        item_quantities = inline_serializer(many=True, fields={
+            'slug': serializers.CharField(),
+            'cart_quantity': serializers.IntegerField()
+        })
 
     def post(self, request, *args, **kwargs):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        item_quantities = serializer.validated_data.pop("item_quantities", None)
+
+        if item_quantities:
+            for iq in item_quantities:
+                if not "cart_quantity" in iq:
+                    continue
+                product = Product.objects.get(slug=iq["slug"])
+                product.quantity = Decimal(product.quantity) - Decimal(iq["cart_quantity"])
+                product.save()
+
         invoice = create_invoice(user=request.user, **serializer.validated_data)
+
         serializer = InvoiceSerializer(invoice)
 
         return Response(serializer.data)

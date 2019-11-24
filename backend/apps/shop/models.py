@@ -66,3 +66,6 @@ class Invoice(models.Model):
     billing_address = models.CharField(max_length=255)
     shipping_address = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']

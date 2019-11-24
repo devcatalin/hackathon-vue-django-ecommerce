@@ -23,7 +23,7 @@ export const shoppingCartModule = {
     addCartItem(state, item) {
       if (state.cart.items.includes(item))
         return;
-      item.quantity = 1;
+      item.cart_quantity = 1;
       state.cart.items = [...state.cart.items, item];
       state.cart.total = state.cart.total + item.price;
       saveToLocalStorage("cart", state.cart);
@@ -38,6 +38,13 @@ export const shoppingCartModule = {
         state.cart.total = state.cart.total - product.price;
       }
       saveToLocalStorage("cart", state.cart);
+    },
+    clearCart(state) {
+      localStorage.removeItem("cart");
+      state.cart =  {
+        items: [],
+        total: 0
+      }
     }
   },
   actions: {
@@ -49,6 +56,9 @@ export const shoppingCartModule = {
     },
     removeCartItem({ commit }, item) {
       commit('removeCartItem', item);
+    },
+    clearCart({ commit }) {
+      commit('clearCart');
     }
   }
 }

@@ -37,7 +37,12 @@
           </b-table-column>
           <b-table-column field="cantity" label="Cantitate" width="250">
             <b-field>
-              <b-numberinput controls-position="compact" min="1" v-model="props.row.quantity"></b-numberinput>
+              <b-numberinput
+                controls-position="compact"
+                min="1"
+                :max="props.row.quantity"
+                v-model="props.row.cart_quantity"
+              ></b-numberinput>
             </b-field>
           </b-table-column>
           <b-table-column centered field="price" label="Pret">
@@ -86,7 +91,7 @@
       <card
         class="stripe-card m-b-md"
         :class="{ complete }"
-        stripe="pk_test_XXXXXXXXXXXXXXXXXXXXXXXX"
+        stripe="pk_test_NGsJ3Z68VDy1wJRWckevqlPb00fSf5vdIa"
         @change="setComplete"
       />
       <b-button class="pay-with-stripe" :disabled="!complete" @click="pay">Plateste acum</b-button>
@@ -107,6 +112,8 @@
 <script>
 import { Card, createToken } from "vue-stripe-elements-plus";
 import AddressSearch from "../components/AddressSearch.vue";
+
+import http from "@/http";
 
 import { mapGetters } from "vuex";
 
@@ -166,12 +173,46 @@ export default {
       return (0.05 * avg).toFixed(2);
     },
     getTotalCost() {
-      return parseFloat(this.getCartTotal) + parseFloat(this.deliveryCost);
+      return (
+        parseFloat(this.getCartTotal) + parseFloat(this.deliveryCost)
+      ).toFixed(2);
     }
   },
   methods: {
-    pay() {
-      createToken().then(data => console.log(data.token));
+    async pay() {
+      const cardResponse = await createToken();
+      const card_token = JSON.stringify(cardResponse.token);
+      console.log(card_token);
+      let summary = "";
+      for (let i = 0; i < this.tableItems.length; i++) {
+        let item = this.tableItems[i];
+        summary += `${item.title} x ${item.quantity} - `;
+      }
+      summary = summary.slice(0, -3);
+
+      const item_quantities = this.tableItems.map(item => {
+        return {
+          slug: item.slug,
+          cart_quantity: item.cart_quantity
+        };
+      });
+
+      console.log(item_quantities);
+
+      await http.post("/api/shop/invoices/create/", {
+        card_token: card_token,
+        total_cost: this.getTotalCost,
+        summary,
+        billing_address: this.user.profile.address,
+        shipping_address: this.userAddress.name,
+        item_quantities: item_quantities
+      });
+
+      this.$store.dispatch("clearCart");
+
+      this.$router.push("/my-account");
+
+      this.$buefy.toast.open("Comanda a fost trimisă cu success!");
     },
     setDefaultAddress() {
       this.userAddress.name = this.user.profile.address;

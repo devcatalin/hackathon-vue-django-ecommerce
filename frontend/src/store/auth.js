@@ -78,8 +78,9 @@ export const authModule = {
           });
       });
     },
-    logout({ commit }) {
+    logout({ commit, dispatch }) {
       localStorage.removeItem("token");
+      dispatch('clearCart');
       commit("logout");
     },
     async updateProfile({ commit }, payload) {
