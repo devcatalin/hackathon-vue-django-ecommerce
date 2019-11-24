@@ -4,16 +4,25 @@
       <b-navbar-item tag="router-link" :to="{ path: '/home' }">
         <p>LocalGoods</p>
       </b-navbar-item>
+      <b-navbar-item tag="router-link" :to="{ path: '/products' }">
+        <span>Produse</span>
+      </b-navbar-item>
     </template>
     <template slot="end" v-if="!isAuthenticated">
       <router-link to="/login" exact v-slot="{ isActive, navigate }">
         <b-navbar-item @click="navigate" :active="isActive">Autentificare</b-navbar-item>
       </router-link>
       <router-link to="/register" exact v-slot="{ isActive, navigate }">
-        <b-navbar-item @click="navigate" :active="isActive">Inregistrare</b-navbar-item>
+        <b-navbar-item @click="navigate" :active="isActive">Înregistrare</b-navbar-item>
       </router-link>
     </template>
-    <template slot="end" v-if="isAuthenticated && !isSeller">
+    <template slot="end" v-if="isAuthenticated && user.profile.user_type == 'manager'">
+      <router-link to="/admin-control" exact v-slot="{ isActive, navigate }">
+        <b-navbar-item @click="navigate" :active="isActive">Administrare</b-navbar-item>
+      </router-link>
+      <b-navbar-item @click="logout">Deconectare</b-navbar-item>
+    </template>
+    <template slot="end" v-if="isAuthenticated && user.profile.user_type =='buyer'">
       <router-link to="/my-account" exact v-slot="{ isActive, navigate }">
         <b-navbar-item @click="navigate" :active="isActive">Contul meu</b-navbar-item>
       </router-link>
@@ -22,13 +31,16 @@
           <b-icon icon="cart" />
           <span
             style="font-weight: 700; background-color: black; border-radius: 50%; width: 25px; display:inline-block;"
-          >{{cartItems.length}}</span>
+          >{{ cartItems.length }}</span>
           <b-icon icon="menu-down"></b-icon>
         </b-button>
         <b-dropdown-item custom aria-role="menuitem">
           <div class="shopping-cart-dropdown">
             <div>
-              <router-link to="/shopping-cart">{{ cartItems.length }} produse in cos</router-link>
+              <router-link to="/shopping-cart">
+                {{ cartItems.length }} produse în
+                coș
+              </router-link>
               <p>{{ cartTotal }} Lei</p>
             </div>
             <b-button
@@ -42,7 +54,7 @@
       </b-dropdown>
       <b-navbar-item @click="logout">Deconectare</b-navbar-item>
     </template>
-    <template slot="end" v-if="isAuthenticated && isSeller">
+    <template slot="end" v-if="isAuthenticated && user.profile.user_type=='seller'">
       <router-link to="/seller-products" exact v-slot="{ isActive, navigate }">
         <b-navbar-item @click="navigate">Contul meu</b-navbar-item>
       </router-link>
@@ -56,7 +68,13 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["isAuthenticated", "cartItems", "isSeller", "cartTotal"])
+    ...mapGetters([
+      "isAuthenticated",
+      "cartItems",
+      "isSeller",
+      "cartTotal",
+      "user"
+    ])
   },
   methods: {
     logout() {

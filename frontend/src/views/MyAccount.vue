@@ -3,44 +3,31 @@
     <user-profile />
     <div class="card orders-card p-lg">
       <h1 class="m-b-lg">Comenzile mele</h1>
-      <b-table
-        :data="data"
-        ref="table"
-        :opened-detailed="defaultOpenedDetails"
-        detailed
-        detail-key="id"
-        :show-detail-icon="showDetailIcon"
-      >
+      <b-table :data="invoices" ref="table">
         <template slot-scope="props">
-          <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
-
-          <b-table-column centered field="date" label="Date">
-            <template v-if="showDetailIcon">{{ props.row.date }}</template>
-            <template v-else>
-              <a @click="toggle(props.row)">{{ props.row.date }}</a>
-            </template>
+          <b-table-column field="id" label="ID" width="40" numeric>
+            {{
+            props.row.id
+            }}
           </b-table-column>
 
-          <b-table-column
-            centered
-            field="number_of_products"
-            label="Numar produse"
-          >{{ props.row.number_of_products }}</b-table-column>
+          <b-table-column field="summary" label="Descriere">
+            {{
+            props.row.summary
+            }}
+          </b-table-column>
 
-          <b-table-column centered field="total" label="Total comanda">{{ props.row.total }}</b-table-column>
-        </template>
+          <b-table-column field="total_cost" label="Cost total" numeric>
+            {{
+            props.row.total_cost
+            }}
+          </b-table-column>
 
-        <template slot="detail">
-          <div class="order-details">
-            <b-table :data="orderData">
-              <template slot-scope="props">
-                <b-table-column field="name" label="Nume produs">{{ props.row.name }}</b-table-column>
-                <b-table-column field="u_m" label="Unitate de masura">{{ props.row.u_m }}</b-table-column>
-                <b-table-column field="cantity" label="Cantitate">{{ props.row.cantity }}</b-table-column>
-                <b-table-column field="price" label="Pret total">{{ props.row.price }}</b-table-column>
-              </template>
-            </b-table>
-          </div>
+          <b-table-column field="total_cost" label="Data si ora" numeric>
+            {{
+            props.row.date.replace("T", " ").replace("Z", " ").slice(0, -8)
+            }}
+          </b-table-column>
         </template>
       </b-table>
     </div>
@@ -48,6 +35,7 @@
 </template>
 
 <script>
+import http from "@/http";
 import UserProfile from "../components/Profile.vue";
 
 export default {
@@ -59,43 +47,17 @@ export default {
       this.$refs.table.toggleDetails(row);
     }
   },
+  beforeMount() {
+    http.get("/api/shop/invoices/list/").then(response => {
+      this.invoices = response.data;
+    });
+  },
   data() {
     return {
       deleteOrder: false,
       defaultOpenedDetails: [],
       showDetailIcon: true,
-      data: [
-        {
-          id: 1,
-          date: "2016/10/15 13:43:27",
-          number_of_products: 3,
-          total: "5,823 Lei"
-        },
-        {
-          id: 2,
-          date: "2016/10/15 13:43:27",
-          number_of_products: 3,
-          total: "5,823 Lei"
-        },
-        {
-          id: 3,
-          date: "2016/10/15 13:43:27",
-          number_of_products: 3,
-          total: "5,823 Lei"
-        },
-        {
-          id: 4,
-          date: "2016/10/15 13:43:27",
-          number_of_products: 3,
-          total: "5,823 Lei"
-        },
-        {
-          id: 5,
-          date: "2016/10/15 13:43:27",
-          number_of_products: 3,
-          total: "5,823 Lei"
-        }
-      ],
+      invoices: [],
       orderData: [
         {
           name: "Rosii",

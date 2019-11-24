@@ -3,20 +3,31 @@
     <!-- <img :src="thumbnail" :alt="title" /> -->
     <div :style="`background-image: url(${product.thumbnail})`" class="thumbnail"></div>
     <div class="product-list-details">
-      <h1>{{product.title}}</h1>
-      <p>{{product.description}}</p>
-      <p>Vândut de: {{product.seller}}</p>
+      <router-link :to="`/products/detail/${product.slug}`" exact>
+        <h1>{{ product.title }}</h1>
+      </router-link>
+      <p>{{ product.description }}</p>
+      <p>Vândut de: {{ product.seller }}</p>
+      <p>Stoc: {{ product.quantity }} - {{ product.quantity_type }}</p>
       <div class="product-list-details-bottom">
-        <span>{{product.price}} Lei</span>
-        <router-link v-if="!isAuthenticated" to="/login" exact v-slot="{ navigate }">
-          <b-button icon-left="cart" type="is-primary" @click="navigate">Adaugă în cos</b-button>
-        </router-link>
-        <b-button
-          @click.prevent="addProductToCart"
-          v-else
-          icon-left="cart"
-          type="is-primary"
-        >Adaugă în cos</b-button>
+        <span>{{ product.price }} Lei / {{ product.quantity_type }}</span>
+        <div v-if="user.profile.user_type !== 'seller'">
+          <router-link to="/login" v-if="!isAuthenticated">
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
+            în coș
+          </router-link>
+          <a
+            v-else-if="product.quantity === 0"
+            style="background-color: grey; cursor: default;"
+            class="buton-a"
+          >
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Stoc epuizat
+          </a>
+          <a @click.prevent="addProductToCart" v-else class="buton-a">
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
+            în coș
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -27,7 +38,7 @@ import { mapGetters } from "vuex";
 export default {
   props: ["product"],
   computed: {
-    ...mapGetters(["isAuthenticated"])
+    ...mapGetters(["isAuthenticated", "user"])
   },
   methods: {
     addProductToCart() {
@@ -76,6 +87,18 @@ h1 {
 
 .thumbnail {
   background-position: center;
-  background-size: contain;
+  background-size: cover;
+}
+
+.buton-a {
+  text-align: center;
+  background-color: #2e7d32;
+  color: white;
+  padding: 0.5rem;
+  transition: all 0.5s;
+}
+
+.buton-a:hover {
+  background-color: #4caf50;
 }
 </style>

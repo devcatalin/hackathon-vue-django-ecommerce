@@ -4,7 +4,7 @@
       <h1 class="m-b-md">Detalii cont</h1>
       <h2 class="m-b-sm">
         Nume de utilizator:
-        <span>{{ user.username}}</span>
+        <span>{{ user.username }}</span>
       </h2>
       <h2 class="m-b-sm">
         Nume complet:
@@ -12,7 +12,7 @@
       </h2>
       <h2 class="m-b-sm">
         Email:
-        <span>{{ user.profile.full_name }}</span>
+        <span>{{ user.email }}</span>
       </h2>
       <h2 class="m-b-sm">
         Număr de telefon:
@@ -23,11 +23,11 @@
         <span>{{ user.profile.address }}</span>
       </h2>
       <div class="flex-center">
-        <b-button @click="updateInfo = true" type="is-primary">Editeaza informatiile</b-button>
+        <b-button @click="updateInfo = true" type="is-primary">Editează informațiile</b-button>
       </div>
     </div>
     <b-modal :active.sync="updateInfo" has-modal-card :can-cancel="true">
-      <update-details />
+      <update-details :closeModal="() => this.updateInfo = false" />
     </b-modal>
   </div>
 </template>

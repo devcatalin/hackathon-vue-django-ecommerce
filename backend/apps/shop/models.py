@@ -57,9 +57,15 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.subcategory.title} - {self.title} - {self.price}'
 
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField()
 
-    def __str__(self):
-        return f'{self.product.title} - {self.image}'
+class Invoice(models.Model):
+    user = models.ForeignKey(User, related_name="invoices", on_delete=models.CASCADE)
+    summary = models.TextField()
+    total_cost = models.DecimalField(max_digits=6, decimal_places=2)
+    card_token = models.CharField(max_length=255)
+    billing_address = models.CharField(max_length=255)
+    shipping_address = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']

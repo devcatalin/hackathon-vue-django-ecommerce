@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,13 +8,13 @@ from rest_framework.exceptions import ValidationError
 from apps.users.serializers import UserProfileSerializer
 from apps.users.models import UserProfile
 
-from .models import Category, Subcategory, Product
+from .models import Category, Subcategory, Product, Invoice
 
-from .services import create_product
+from .services import create_product, update_product, create_invoice
 
 from .selectors import get_categories, get_products_from_subcategory
 
-from .serializers import CategorySerializer, ProductSerializer
+from .serializers import CategorySerializer, ProductSerializer, InvoiceSerializer
 
 from .utils import inline_serializer
 
@@ -60,7 +62,12 @@ class ProductListView(APIView):
         if sort_option and sort_option != "":
             products = products.order_by(sort_option)
 
+
+        if request.user.is_authenticated:
+            products = products.filter(owner__buyer_type=request.user.buyer_type)
+
         products_serializer = ProductSerializer(products, many=True)
+
 
         owners = set()
 
@@ -124,6 +131,7 @@ class ProductCreateView(APIView):
         description = serializers.CharField()
         thumbnail = serializers.ImageField()
         quantity_type = serializers.CharField()
+        quantity = serializers.IntegerField()
         subcategory = serializers.SlugField()
 
     def post(self, request, *args, **kwargs):
@@ -170,3 +178,108 @@ class ProductDeleteView(APIView):
         Product.objects.filter(slug=product_slug).delete()
 
         return Response("Deleted successfully")
+
+
+class InvoiceCreateView(APIView):
+    class InputSerializer(serializers.Serializer):
+        summary = serializers.CharField()
+        total_cost = serializers.DecimalField(max_digits=6, decimal_places=2)
+        card_token = serializers.CharField()
+        shipping_address = serializers.CharField()
+        item_quantities = inline_serializer(many=True, fields={
+            'slug': serializers.CharField(),
+            'cart_quantity': serializers.IntegerField()
+        })
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        item_quantities = serializer.validated_data.pop("item_quantities", None)
+
+        if item_quantities:
+            for iq in item_quantities:
+                if not "cart_quantity" in iq:
+                    continue
+                product = Product.objects.get(slug=iq["slug"])
+                product.quantity = Decimal(product.quantity) - Decimal(iq["cart_quantity"])
+                product.save()
+
+        invoice = create_invoice(user=request.user, **serializer.validated_data)
+
+        serializer = InvoiceSerializer(invoice)
+
+        return Response(serializer.data)
+
+
+class InvoiceListView(APIView):
+    def get(self, request, *args, **kwargs):
+        invoices = Invoice.objects.filter(user=request.user)
+        serializer = InvoiceSerializer(invoices, many=True)
+        return Response(serializer.data)
+
+
+class CategoryCreateView(APIView):
+    class InputSerializer(serializers.Serializer):
+        title = serializers.CharField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        title = serializer.validated_data["title"]
+
+        Category.objects.create(title=title)
+
+        return Response("created category successfully")
+
+
+class CategoryDeleteView(APIView):
+    class InputSerializer(serializers.Serializer):
+        category_slug = serializers.SlugField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        category_slug = serializer.validated_data["category_slug"]
+
+        category = Category.objects.get(slug=category_slug)
+
+        category.delete()
+
+        return Response("deleted category successfully")
+
+
+class SubcategoryCreateView(APIView):
+    class InputSerializer(serializers.Serializer):
+        title = serializers.CharField()
+        category_slug = serializers.SlugField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        title = serializer.validated_data["title"]
+        category_slug = serializer.validated_data["category_slug"]
+        category = Category.objects.get(slug=category_slug)
+        Subcategory.objects.create(title=title, category=category)
+
+        return Response("created subcategory successfully")
+
+
+class SubategoryDeleteView(APIView):
+    class InputSerializer(serializers.Serializer):
+        subcategory_slug = serializers.SlugField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        subcategory_slug = serializer.validated_data["subcategory_slug"]
+
+        subcategory = Subcategory.objects.get(slug=subcategory_slug)
+
+        subcategory.delete()
+
+        return Response("deleted subcategory successfully")

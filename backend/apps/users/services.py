@@ -46,8 +46,34 @@ def create_user(
 def update_user(
     *,
     user,
-    full_name,
-    phone_number,
-    address
+    full_name=None,
+    phone_number=None,
+    email=None,
+    address=None,
+    longitude=None,
+    latitude=None
 ):
-    pass
+    if email and email != "":
+        user.email = email
+
+    profile = user.profile
+
+    if full_name and full_name != "":
+        profile.full_name = full_name
+
+    if phone_number and phone_number != "":
+        profile.phone_number = phone_number
+
+    if address and address != "":
+        profile.address = address
+
+    if longitude and longitude != -1:
+        profile.longitude = longitude
+
+    if latitude and latitude != -1:
+        profile.latitude = latitude
+
+    profile.save()
+    user.save()
+
+    return User.objects.get(pk=user.pk)

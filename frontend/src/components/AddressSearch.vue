@@ -7,6 +7,7 @@
 import places from "places.js";
 
 export default {
+  props: ["required"],
   data() {
     return { instance: null };
   },
@@ -15,7 +16,7 @@ export default {
     // this way it can properly unmount
     this.input = document.createElement("input");
     this.input.style = "width: 100%";
-    this.input.required = true;
+    this.input.required = this.required;
     this.$el.appendChild(this.input);
 
     this.instance = places({

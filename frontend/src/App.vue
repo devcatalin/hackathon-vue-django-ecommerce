@@ -50,7 +50,7 @@ body {
 }
 
 #app {
-  font-family: "Tajawal", sans-serif !important;
+  font-family: "Ibarra Real Nova", serif !important;
 }
 
 html {

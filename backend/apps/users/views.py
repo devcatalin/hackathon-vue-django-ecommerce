@@ -40,9 +40,16 @@ class UserRegisterView(APIView):
 
 class UserProfileUpdateView(APIView):
     class InputSerializer(serializers.Serializer):
-        full_name = serializers.CharField()
-        phone_number = serializers.CharField()
-        address = serializers.CharField()
+        full_name = serializers.CharField(required=False, allow_blank=True)
+        phone_number = serializers.CharField(required=False, allow_blank=True)
+        email = serializers.EmailField(required=False, allow_blank=True)
+        address = serializers.CharField(required=False, allow_blank=True)
+        longitude = serializers.DecimalField(
+            max_digits=9, decimal_places=6, required=False, allow_null=True
+        )
+        latitude = serializers.DecimalField(
+            max_digits=9, decimal_places=6, required=False, allow_null=True
+        )
 
     def post(self, request, *args, **kwargs):
         serializer = self.InputSerializer(data=request.data)
@@ -68,3 +75,32 @@ class SellerListView(APIView):
         profiles = UserProfile.objects.filter(user_type='seller')
         serializer = UserProfileSerializer(profiles, many=True)
         return Response(serializer.data)
+
+
+class UserListView(APIView):
+    def get(self, request, *args, **kwargs):
+        profiles = UserProfile.objects.filter(user_type="seller")
+        serializer = UserProfileSerializer(profiles, many=True)
+        return Response(serializer.data)
+
+
+class UserDeleteView(APIView):
+    class InputSerializer(serializers.Serializer):
+        username = serializers.CharField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            user = User.objects.get(
+                username=serializer.validated_data["username"]
+            )
+        except User.DoesNotExist:
+            user = None
+
+        if user is None:
+            return Response("Couldn't delete the user.")
+
+        user.delete()
+        return Response("User was deleted successfully.")
