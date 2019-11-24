@@ -13,7 +13,7 @@
   </div>
   <div v-else class="shopping-cart m-l-lg m-r-lg m-t-lg">
     <div class="m-b-lg">
-      <b-table :bordered="true" :data="cartItems">
+      <b-table :bordered="true" :data="tableItems">
         <template slot-scope="props">
           <b-table-column field="name" label="Nume produs">
             {{
@@ -37,7 +37,7 @@
           </b-table-column>
           <b-table-column field="cantity" label="Cantitate" width="250">
             <b-field>
-              <b-numberinput controls-position="compact" min="0" v-model="props.row.quantity"></b-numberinput>
+              <b-numberinput controls-position="compact" min="1" v-model="props.row.quantity"></b-numberinput>
             </b-field>
           </b-table-column>
           <b-table-column centered field="price" label="Pret">
@@ -53,14 +53,20 @@
         </template>
       </b-table>
     </div>
-    <h4 class="level-right">Total cos: {{ cartTotal }} Lei</h4>
+    <h4 class="level-right">Total cos: {{ getCartTotal }} Lei</h4>
     <h4 class="level-right m-b-sm">Cost livrare: {{ deliveryCost }} Lei</h4>
-    <h2 class="level-right">Total de plata: 5,810.70 Lei</h2>
+    <h2 class="level-right">Total de plata: {{ getTotalCost }} Lei</h2>
 
     <div class="card m-t-lg p-lg payment-panel">
       <h1>Doresc sa mi se livreze comanda la:</h1>
       <div class="field">
-        <b-radio native-value="oldAddress" v-model="address" name="address" size="is-medium">Adresa</b-radio>
+        <b-radio
+          native-value="oldAddress"
+          v-model="address"
+          name="address"
+          size="is-medium"
+          @click.native="setDefaultAddress"
+        >{{ user.profile.address }}</b-radio>
       </div>
       <div class="field">
         <b-radio
@@ -70,9 +76,9 @@
           size="is-medium"
         >Adauga adresa noua</b-radio>
       </div>
-      <div v-if="address == 'newAddress'" class="full-columns m-b-md">
+      <div style="width: 30rem" v-if="address == 'newAddress'" class="m-b-md">
         <label class="label">Adresa</label>
-        <address-search :required="true" />
+        <address-search @change="onAddressChange" :required="true" />
       </div>
     </div>
     <div class="payment-panel card p-lg m-t-lg m-b-md">
@@ -83,7 +89,7 @@
         stripe="pk_test_XXXXXXXXXXXXXXXXXXXXXXXX"
         @change="setComplete"
       />
-      <b-button class="pay-with-stripe" :disabled="!complete">Plateste acum</b-button>
+      <b-button class="pay-with-stripe" :disabled="!complete" @click="pay">Plateste acum</b-button>
     </div>
 
     <b-modal :active.sync="deleteProductModal.visible" has-modal-card :can-cancel="true">
@@ -99,7 +105,7 @@
 </template>
 
 <script>
-import { Card } from "vue-stripe-elements-plus";
+import { Card, createToken } from "vue-stripe-elements-plus";
 import AddressSearch from "../components/AddressSearch.vue";
 
 import { mapGetters } from "vuex";
@@ -117,15 +123,68 @@ export default {
         product: null
       },
       address: "oldAddress",
-      deliveryCost: (
-        0.05 * this.distance(45.7538, 21.2257, 46.7693, 23.5901, "K")
-      ).toFixed(2)
+      userAddress: {
+        name: "",
+        longitude: 0,
+        latitude: 0
+      },
+      tableItems: []
     };
   },
+  beforeMount() {
+    this.tableItems = [...this.cartItems];
+    this.setDefaultAddress();
+  },
   computed: {
-    ...mapGetters(["cartItems", "cartTotal"])
+    ...mapGetters(["cartItems", "user"]),
+    getCartTotal() {
+      let sum = 0;
+      for (let i = 0; i < this.tableItems.length; i++) {
+        const item = this.tableItems[i];
+        sum += item.quantity * item.price;
+      }
+      return sum;
+    },
+    deliveryCost() {
+      let sum = 0;
+      let distances = {};
+      for (let i = 0; i < this.tableItems.length; i++) {
+        let item = this.tableItems[i];
+        if (item.seller in distances) {
+          continue;
+        }
+        distances[item.seller] = item.seller;
+        let distance = this.distance(
+          this.userAddress.latitude,
+          this.userAddress.longitude,
+          item.seller_latitude,
+          item.seller_longitude
+        );
+        sum += distance;
+      }
+      let avg = sum / this.tableItems.length;
+      return (0.05 * avg).toFixed(2);
+    },
+    getTotalCost() {
+      return parseFloat(this.getCartTotal) + parseFloat(this.deliveryCost);
+    }
   },
   methods: {
+    pay() {
+      createToken().then(data => console.log(data.token));
+    },
+    setDefaultAddress() {
+      this.userAddress.name = this.user.profile.address;
+      this.userAddress.latitude = this.user.profile.latitude;
+      this.userAddress.longitude = this.user.profile.longitude;
+    },
+    onAddressChange(event) {
+      if (event.suggestion.value) {
+        this.userAddress.name = event.suggestion.value;
+        this.userAddress.latitude = event.suggestion.latlng.lat;
+        this.userAddress.longitude = event.suggestion.latlng.lng;
+      }
+    },
     cancelDeleteProduct() {
       this.deleteProductModal = {
         visible: false,
@@ -145,12 +204,15 @@ export default {
       this.$store.dispatch("removeCartItem", {
         ...this.deleteProductModal.product
       });
+      this.tableItems = this.tableItems.filter(
+        i => i.slug !== this.deleteProductModal.product.slug
+      );
       this.cancelDeleteProduct();
     },
     setComplete(event) {
       this.complete = event.complete;
     },
-    distance(lat1, lon1, lat2, lon2, unit) {
+    distance(lat1, lon1, lat2, lon2) {
       if (lat1 == lat2 && lon1 == lon2) {
         return 0;
       } else {
@@ -167,13 +229,8 @@ export default {
         dist = Math.acos(dist);
         dist = (dist * 180) / Math.PI;
         dist = dist * 60 * 1.1515;
-        if (unit == "K") {
-          dist = dist * 1.609344;
-        }
-        if (unit == "N") {
-          dist = dist * 0.8684;
-        }
-        return dist;
+
+        return dist * 1.609344;
       }
     }
   }

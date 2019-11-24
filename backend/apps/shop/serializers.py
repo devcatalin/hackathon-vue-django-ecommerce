@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, Subcategory, Product
+from .models import Category, Subcategory, Product, Invoice
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
@@ -26,10 +26,15 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategorySimpleSerializer(source="subcategory.category")
     subcategory = SubcategorySerializer()
     seller = serializers.CharField(source="owner.username")
+    seller_latitude = serializers.CharField(source="owner.profile.latitude")
+    seller_longitude = serializers.CharField(source="owner.profile.longitude")
+
     class Meta:
         model = Product
         fields = [
             'seller',
+            'seller_latitude',
+            'seller_longitude',
             'slug',
             'title',
             'price',
@@ -40,3 +45,9 @@ class ProductSerializer(serializers.ModelSerializer):
             'category',
             'subcategory'
         ]
+
+
+class InvoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invoice
+        fields = ['user', 'total_cost', 'summary', 'billing_address', 'shipping_address']

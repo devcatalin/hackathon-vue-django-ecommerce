@@ -6,13 +6,13 @@ from rest_framework.exceptions import ValidationError
 from apps.users.serializers import UserProfileSerializer
 from apps.users.models import UserProfile
 
-from .models import Category, Subcategory, Product
+from .models import Category, Subcategory, Product, Invoice
 
-from .services import create_product
+from .services import create_product, update_product, create_invoice
 
 from .selectors import get_categories, get_products_from_subcategory
 
-from .serializers import CategorySerializer, ProductSerializer
+from .serializers import CategorySerializer, ProductSerializer, InvoiceSerializer
 
 from .utils import inline_serializer
 
@@ -124,6 +124,7 @@ class ProductCreateView(APIView):
         description = serializers.CharField()
         thumbnail = serializers.ImageField()
         quantity_type = serializers.CharField()
+        quantity = serializers.IntegerField()
         subcategory = serializers.SlugField()
 
     def post(self, request, *args, **kwargs):
@@ -170,3 +171,27 @@ class ProductDeleteView(APIView):
         Product.objects.filter(slug=product_slug).delete()
 
         return Response("Deleted successfully")
+
+
+class InvoiceCreateView(APIView):
+    class InputSerializer(serializers.Serializer):
+        summary = serializers.CharField()
+        total_cost = serializers.CharField()
+        card_token = serializers.CharField()
+        shipping_address = serializers.CharField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        invoice = create_invoice(user=request.user, **serializer.validated_data)
+        serializer = InvoiceSerializer(invoice)
+
+        return Response(serializer.data)
+
+
+class InvoiceListView(APIView):
+    def get(self, request, *args, **kwargs):
+        invoices = Invoice.objects.filter(user=request.user)
+        serializer = InvoiceSerializer(invoices, many=True)
+        return Response(serializer.data)
