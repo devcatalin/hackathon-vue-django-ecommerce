@@ -12,3 +12,5 @@ The project will be deployed with Heroku at: http://itecweb2019.herokuapp.com/
     - Whitenoise
     - Django JWT Authentication
     - SendGrid
+
+[DIAGRAMA BAZA DE DATE](https://i.imgur.com/jkN7aGZ.png)
