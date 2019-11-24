@@ -75,3 +75,32 @@ class SellerListView(APIView):
         profiles = UserProfile.objects.filter(user_type='seller')
         serializer = UserProfileSerializer(profiles, many=True)
         return Response(serializer.data)
+
+
+class UserListView(APIView):
+    def get(self, request, *args, **kwargs):
+        profiles = UserProfile.objects.filter(user_type="seller")
+        serializer = UserProfileSerializer(profiles, many=True)
+        return Response(serializer.data)
+
+
+class UserDeleteView(APIView):
+    class InputSerializer(serializers.Serializer):
+        username = serializers.CharField()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            user = User.objects.get(
+                username=serializer.validated_data["username"]
+            )
+        except User.DoesNotExist:
+            user = None
+
+        if user is None:
+            return Response("Couldn't delete the user.")
+
+        user.delete()
+        return Response("User was deleted successfully.")

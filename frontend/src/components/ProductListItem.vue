@@ -11,21 +11,23 @@
       <p>Stoc: {{ product.quantity }} - {{ product.quantity_type }}</p>
       <div class="product-list-details-bottom">
         <span>{{ product.price }} Lei / {{ product.quantity_type }}</span>
-        <router-link to="/login" v-if="!isAuthenticated">
-          <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
-          în coș
-        </router-link>
-        <a
-          v-else-if="product.quantity === 0"
-          style="background-color: grey; cursor: default;"
-          class="buton-a"
-        >
-          <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Stoc epuizat
-        </a>
-        <a @click.prevent="addProductToCart" v-else class="buton-a">
-          <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
-          în coș
-        </a>
+        <div v-if="user.profile.user_type !== 'seller'">
+          <router-link to="/login" v-if="!isAuthenticated">
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
+            în coș
+          </router-link>
+          <a
+            v-else-if="product.quantity === 0"
+            style="background-color: grey; cursor: default;"
+            class="buton-a"
+          >
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Stoc epuizat
+          </a>
+          <a @click.prevent="addProductToCart" v-else class="buton-a">
+            <b-icon class="m-r-sm" icon="cart" size="is-small"></b-icon>Adaugă
+            în coș
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -36,7 +38,7 @@ import { mapGetters } from "vuex";
 export default {
   props: ["product"],
   computed: {
-    ...mapGetters(["isAuthenticated"])
+    ...mapGetters(["isAuthenticated", "user"])
   },
   methods: {
     addProductToCart() {

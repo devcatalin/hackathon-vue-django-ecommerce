@@ -52,7 +52,7 @@
           <b-input min="0" type="number" v-model="quantity" />
         </b-field>
         <b-field label="Preț pe unitate">
-          <b-input type="number" v-model="price" />
+          <b-input type="float" v-model="price" />
         </b-field>
       </div>
 

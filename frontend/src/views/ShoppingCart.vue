@@ -148,7 +148,7 @@ export default {
       let sum = 0;
       for (let i = 0; i < this.tableItems.length; i++) {
         const item = this.tableItems[i];
-        sum += item.quantity * item.price;
+        sum += item.cart_quantity * item.price;
       }
       return sum;
     },
@@ -186,7 +186,7 @@ export default {
       let summary = "";
       for (let i = 0; i < this.tableItems.length; i++) {
         let item = this.tableItems[i];
-        summary += `${item.title} x ${item.quantity} - `;
+        summary += `${item.title} x ${item.cart_quantity} - `;
       }
       summary = summary.slice(0, -3);
 
