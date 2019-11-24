@@ -4,6 +4,9 @@
             <b-navbar-item tag="router-link" :to="{ path: '/home' }">
                 <p>LocalGoods</p>
             </b-navbar-item>
+            <b-navbar-item tag="router-link" :to="{ path: '/products' }">
+                <span>Produse</span>
+            </b-navbar-item>
         </template>
         <template slot="end" v-if="!isAuthenticated">
             <router-link to="/login" exact v-slot="{ isActive, navigate }">
