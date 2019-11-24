@@ -62,7 +62,7 @@ class Invoice(models.Model):
     user = models.ForeignKey(User, related_name="invoices", on_delete=models.CASCADE)
     summary = models.TextField()
     total_cost = models.DecimalField(max_digits=6, decimal_places=2)
-    card_token = models.CharField(max_length=255)
+    card_token = models.TextField()
     billing_address = models.CharField(max_length=255)
     shipping_address = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)

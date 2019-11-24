@@ -64,7 +64,7 @@ class ProductListView(APIView):
 
 
         if request.user.is_authenticated:
-            products = products.filter(owner__buyer_type=request.user.buyer_type)
+            products = products.filter(owner__profile__buyer_type=request.user.buyer_type)
 
         products_serializer = ProductSerializer(products, many=True)
 
