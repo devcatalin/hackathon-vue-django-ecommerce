@@ -50,7 +50,7 @@
         </div>
 
         <sidebar />
-        <div class="grid-view" v-if="viewOption === 'Grid'">
+        <div class="grid-view m-r-lg" v-if="viewOption === 'Grid'">
             <product-grid
                 v-for="product in products"
                 :key="product.slug"
