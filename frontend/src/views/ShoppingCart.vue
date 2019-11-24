@@ -35,14 +35,7 @@
           </b-table-column>
           <b-table-column centered field="price" label="Preț">{{ props.row.price }}</b-table-column>
           <b-table-column width="50" field="price">
-            <a
-              @click="
-                                showDeleteProductModal(
-                                    props.row.slug,
-                                    props.row.price
-                                )
-                            "
-            >
+            <a @click="showDeleteProductModal(props.row.slug, props.row.price)">
               <b-icon type="is-danger" icon="delete"></b-icon>
             </a>
           </b-table-column>
@@ -172,7 +165,7 @@ export default {
   methods: {
     async pay() {
       const cardResponse = await createToken();
-      const card_token = JSON.stringify(cardResponse.token);
+      const card_token = JSON.stringify(cardResponse.token.id);
       let summary = "";
       for (let i = 0; i < this.tableItems.length; i++) {
         let item = this.tableItems[i];
