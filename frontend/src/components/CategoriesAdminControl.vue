@@ -5,7 +5,7 @@
       <hr />
       <div class="cat-subcat-display m-b-md" v-for="category in categories" :key="category.slug">
         <button class="button" @click="setSelectedCategory(category)">{{ category.title }}</button>
-        <a @click="setCategoryDelete">
+        <a @click="categoryDelete(category)">
           <b-icon type="is-danger" class="m-l-md" icon="close"></b-icon>
         </a>
       </div>
@@ -32,7 +32,7 @@
           :key="subcategory.slug"
         >
           <b-button>{{ subcategory.title }}</b-button>
-          <a @click="setSubcategoryDelete">
+          <a @click="subcategoryDelete(subcategory)">
             <b-icon type="is-danger" class="m-l-md" icon="close"></b-icon>
           </a>
         </div>
@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <b-modal :active.sync="categoryDelete" has-modal-card :can-cancel="true">
+    <!-- <b-modal :active.sync="categoryDelete" has-modal-card :can-cancel="true">
       <div class="card p-md modal-content">
         <h3 class="m-b-lg">Sunteti siguri ca doriti sa stergeti aceasta categorie?</h3>
         <div class="flex-align">
@@ -72,7 +72,7 @@
           <b-button type="is-danger">Confirma</b-button>
         </div>
       </div>
-    </b-modal>
+    </b-modal>-->
   </div>
 </template>
 
@@ -85,8 +85,8 @@ export default {
   },
   data() {
     return {
-      categoryDelete: false,
-      subcategoryDelete: false,
+      //   categoryDelete: false,
+      //   subcategoryDelete: false,
       selectedCategory: null,
       showCategoryInput: false,
       showSubcategoryInput: false,
@@ -140,11 +140,27 @@ export default {
           this.hideSubcategoryInput();
         });
     },
-    setCategoryDelete() {
-      this.categoryDelete = !this.categoryDelete;
+    categoryDelete(categ) {
+      http
+        .post("/api/shop/categories/delete/", {
+          category_slug: categ.slug
+        })
+        .then(() => {
+          this.$store.dispatch("fetchCategories");
+          this.$buefy.toast.open("Categoria a fost stearsa.");
+          this.selectedCategory = "";
+        });
     },
-    setSubcategoryDelete() {
-      this.subcategoryDelete = !this.subcategoryDelete;
+    subcategoryDelete(subcateg) {
+      http
+        .post("/api/shop/subcategories/delete/", {
+          subcategory_slug: subcateg.slug
+        })
+        .then(() => {
+          this.$store.dispatch("fetchCategories");
+          this.$buefy.toast.open("Subcategoria a fost stearsa.");
+          this.selectedCategory = "";
+        });
     }
   }
 };

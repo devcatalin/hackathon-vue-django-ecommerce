@@ -63,7 +63,7 @@ class ProductListView(APIView):
             products = products.order_by(sort_option)
 
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             products = products.filter(owner__buyer_type=request.user.buyer_type)
 
         products_serializer = ProductSerializer(products, many=True)
@@ -244,7 +244,7 @@ class CategoryDeleteView(APIView):
 
         category_slug = serializer.validated_data["category_slug"]
 
-        category = Category.objects.create(slug=category_slug)
+        category = Category.objects.get(slug=category_slug)
 
         category.delete()
 
@@ -278,7 +278,7 @@ class SubategoryDeleteView(APIView):
 
         subcategory_slug = serializer.validated_data["subcategory_slug"]
 
-        subcategory = Subcategory.objects.create(slug=subcategory_slug)
+        subcategory = Subcategory.objects.get(slug=subcategory_slug)
 
         subcategory.delete()
 

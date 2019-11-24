@@ -1,83 +1,78 @@
 <template>
-    <div class="m-t-md p-lg">
-        <b-table :data="data">
-            <template slot-scope="props">
-                <b-table-column field="name" label="Nume produs">{{
-                    props.row.name
-                }}</b-table-column>
-                <b-table-column field="category" label="Categorie">{{
-                    props.row.category
-                }}</b-table-column>
-                <b-table-column field="u_m" label="U.M.">{{
-                    props.row.u_m
-                }}</b-table-column>
-                <b-table-column field="cantity" label="Cantitate">{{
-                    props.row.cantity
-                }}</b-table-column>
-                <b-table-column field="price" label="Pret pe unitate"
-                    >{{ props.row.price }} Lei</b-table-column
-                >
-                <b-table-column field="username" label="Nume utilizator">{{
-                    props.row.username
-                }}</b-table-column>
-                <b-table-column width="50" field="price">
-                    <a @click="setProductDelete">
-                        <b-icon type="is-danger" icon="delete"></b-icon>
-                    </a>
-                </b-table-column>
-            </template>
-        </b-table>
+  <div class="m-t-md p-lg">
+    <b-table :data="products">
+      <template slot-scope="props">
+        <b-table-column field="name" label="Nume produs">
+          {{
+          props.row.title
+          }}
+        </b-table-column>
+        <b-table-column field="category" label="Categorie">
+          {{
+          props.row.category.title
+          }}
+        </b-table-column>
+        <b-table-column field="quantity_type" label="U.M.">
+          {{
+          props.row.quantity_type
+          }}
+        </b-table-column>
+        <b-table-column field="quantity" label="Cantitate">
+          {{
+          props.row.quantity
+          }}
+        </b-table-column>
+        <b-table-column field="price" label="Pret pe unitate">{{ props.row.price }} Lei</b-table-column>
+        <b-table-column field="seller" label="Vânzător">
+          {{
+          props.row.seller
+          }}
+        </b-table-column>
+        <b-table-column width="50">
+          <a @click="deleteProduct(props.row.slug)">
+            <b-icon type="is-danger" icon="delete"></b-icon>
+          </a>
+        </b-table-column>
+      </template>
+    </b-table>
 
-        <b-modal :active.sync="productDelete" has-modal-card :can-cancel="true">
-            <div class="card p-md modal-content">
-                <h3 class="m-b-lg">
-                    Sunteți siguri că doriți să ștergeți acest anunț?
-                </h3>
-                <div class="flex-align">
-                    <b-button type="is-primary" @click="setProductDelete"
-                        >Anulează</b-button
-                    >
-                    <b-button type="is-danger">Confirmă</b-button>
-                </div>
-            </div>
-        </b-modal>
-
-        <h2 class="m-t-xl level-right">Număr de anunțuri: 1</h2>
-    </div>
+    <h2 class="m-t-xl level-right">Număr de anunțuri: {{ products.length }}</h2>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import http from "@/http";
+
 export default {
-    data() {
-        return {
-            productDelete: false,
-            data: [
-                {
-                    name: "Rosii roz",
-                    category: "Legume",
-                    u_m: "KG",
-                    cantity: 107,
-                    price: 5,
-                    username: "Username"
-                }
-            ]
-        };
-    },
-    methods: {
-        setProductDelete() {
-            this.productDelete = !this.productDelete;
-        }
+  computed: {
+    ...mapGetters(["products"])
+  },
+  beforeMount() {
+    this.$store.dispatch("fetchProducts");
+  },
+  methods: {
+    deleteProduct(product_slug) {
+      http
+        .post("/api/shop/products/delete/", {
+          product_slug: product_slug
+        })
+        .then(() => {
+          this.$store.dispatch("fetchProducts");
+          this.$buefy.toast.open("Produsul a fost sters cu succes.");
+        });
     }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 h3 {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
 }
 </style>
